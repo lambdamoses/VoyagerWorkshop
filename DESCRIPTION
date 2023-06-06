@@ -1,16 +1,14 @@
-Package: BuildABiocWorkshop
-Title: Bioconductor or R Workshop Template and Github Actions
-Version: 2.0.0
+Package: VoyagerWorkshop
+Title: Bioc2023 workshop for ESDA with Voyager
+Version: 0.0.99
 Authors@R: 
-    person(given = "Sean",
-           family = "Davis",
+    person(given = "Lambda",
+           family = "Moses",
            role = c("aut", "cre"),
-           email = "seandavi@gmail.com",
-           comment = c(ORCID = "0000-0002-8991-6458"))
-Description: This package serves as a template for using github actions to 
-    prepare a Bioconductor Workshop package for use. In particular,
-    a pkgdown website and docker image are generated based on workflow 
-    settings. 
+           email = "dlu2@caltech.edu",
+           comment = c(ORCID = "0000-0002-7092-9427"))
+Description: This package contains the workshop material demonstrating using
+    Voyager for exploratory spatial data analysis (ESDA) in a Visium dataset.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -20,9 +18,14 @@ Depends:
     Biobase
 Suggests: 
     knitr,
+    pkgdown,
     rmarkdown,
-    pkgdown
-URL: https://seandavi.github.io/BuildABiocWorkshop/
-BugReports: https://github.com/seandavi/BuildABiocWorkshop/issues/new/choose
+    SFEData,
+    SpatialFeatureExperiment,
+    tibble,
+    tidyr,
+    Voyager
+URL: https://lambdamoses.github.io/VoyagerWorkshop/
+BugReports: https://github.com/lambdamoses/VoyagerWorkshop/issues/new/choose
 VignetteBuilder: knitr
-DockerImage: ghcr.io/seandavi/buildabiocworkshop:latest
+DockerImage: ghcr.io/lambdamoses/voyagerworkshop:latest
