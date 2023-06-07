@@ -17,10 +17,22 @@ RoxygenNote: 7.1.0
 Depends: 
     Biobase
 Suggests: 
+    BiocParallel,
+    ggplot2,
     knitr,
+    Matrix,
+    patchwork,
+    pheatmap,
     pkgdown,
+    rjson,
     rmarkdown,
+    scales,
+    scater,
+    scico,
+    scran,
+    sf,
     SFEData,
+    SingleCellExperiment,
     SpatialFeatureExperiment,
     tibble,
     tidyr,
