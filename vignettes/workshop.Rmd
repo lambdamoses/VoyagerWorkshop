@@ -282,13 +282,13 @@ The `exprs_values` argument specifies the assay to use, which is by default "log
 plot_counts_logcounts <- function(sfe, feature) {
   p1 <- plotSpatialFeature(sfe, feature, "spotPoly",
                    annotGeometryName = "myofiber_simplified", 
-                   annot_aes = list(fill = "area"), show_symbol = TRUE, 
+                   annot_aes = list(fill = "area"), swap_rownames = "symbol", 
                    exprs_values = "counts", aes_use = "color", linewidth = 0.5,
                    fill = NA) +
     ggtitle("Raw counts")
   p2 <- plotSpatialFeature(sfe, feature, "spotPoly",
                    annotGeometryName = "myofiber_simplified", 
-                   annot_aes = list(fill = "area"), show_symbol = TRUE, 
+                   annot_aes = list(fill = "area"), swap_rownames = "symbol", 
                    exprs_values = "logcounts", aes_use = "color", linewidth = 0.5,
                    fill = NA) +
     ggtitle("Log normalized counts")
