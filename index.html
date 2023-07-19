@@ -199,7 +199,7 @@
 <h2 id="to-use-the-docker-image">To use the Docker image<a class="anchor" aria-label="anchor" href="#to-use-the-docker-image"></a>
 </h2>
 <p>This workshop can be run remotely on the <a href="http://app.orchestra.cancerdatasci.org/" class="external-link">Orchestra platform</a>. Alternatively, it can be run locally with the Docker image:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-e</span> PASSWORD=<span class="op">&lt;</span>choose_a_password_for_rstudio<span class="op">&gt;</span> -p 8787:8787 ghcr.io/lambdamoses/voyagerworkshop</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-e</span> PASSWORD=<span class="op">&lt;</span>choose_a_password_for_rstudio<span class="op">&gt;</span> -p 8787:8787 ghcr.io/lambdamoses/voyagerworkshop</span></code></pre></div>
 <p>Once running, navigate to <a href="http://localhost:8787/" class="external-link uri">http://localhost:8787/</a> and then login with <code>rstudio</code>:<code>yourchosenpassword</code>.</p>
 <p>The required packages of the appropriate version as of August 2023 have been pre-installed on Orchestra and in the Docker image.</p>
 </div>
