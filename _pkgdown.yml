@@ -2,7 +2,7 @@ url: https://lambdamoses.github.io/VoaygerWorkshop
 
 template:
   params:
-    bootswatch: flatly
+    bootswatch: cerulean
     #ganalytics: UA-99999999-9
 
 home:

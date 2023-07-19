@@ -4,19 +4,19 @@
 
 ### Description
 
-The `SpatialFeatureExperiment` (SFE) class brings Simple Features as in the `sf` package to `SpatialExperiment` (SPE) and `SingleCellExperiment` (SCE). Simple Features are a standard way to represent geometries, and `sf` performs many geometric operations that can be used to derive cell or Visium spot metadata and to subset the SFE object. In this workshop, you will learn the novel features of SFE by interacting with the geometries and spatial neighborhood graphs, and by performing geometric operations.
+Exploratory spatial data analysis (ESDA) can be a powerful approach to understanding single-cell genomics datasets, but it is not yet part of standard data analysis workflows. In particular, geospatial analyses, which have been developed and refined for decades, have yet to be fully adapted and applied to spatial single-cell analysis. We introduce the `Voyager` platform, which systematically brings the geospatial ESDA tradition to (spatial) -omics, with local, bivariate, and multivariate spatial methods not yet commonly applied to spatial -omics, united by a uniform user interface. Using `Voyager`, we showcase biological insights that can be derived with its methods, such as biologically relevant negative spatial autocorrelation. Underlying `Voyager` is the `SpatialFeatureExperiment` (SFE) data structure, which combines Simple Feature with `SingleCellExperiment` and `AnnData` to represent and operate on geometries bundled with gene expression data. Voyager has comprehensive tutorials demonstrating ESDA built on GitHub Actions to ensure reproducibility and scalability, using data from popular commercial technologies. Voyager is implemented in both R/Bioconductor and Python/PyPI, and features compatibility tests to ensure that both implementations return consistent results. 
 
-Then this workshop introduces exploratory spatial data analysis (ESDA) on the SFE object with the `Voyager` package. This includes visualizing data in space, and spatial statistics methods that exemplify each category of ESDA, including Moran's I (univariate global), local Moran's I (univariate local), Lee's L (bivariate), and MULTISPATI PCA (multivariate).
+In this workshop, you will get hands on experiences on the R implementation of SFE and Voyager. First, you will learn to create and operate on SFE objects. Next you will perform various types of ESDA on an SFE object with Voyager, and learn the spatial statistics behind these methods. The workshop material points you to further reading on these methods. You can read more about Voyager in [this preprint]().
 
 ### Pre-requisites
 
-List any workshop prerequisites, for example:
+This is an advanced workshop. You are expected to have:
 
-* Basic knowledge of R syntax
+* Intermediate knowledge of R syntax and `ggplot2`
 * Familiarity with `SingleCellExperiment`
-* Basic statistics such as Pearson correlation
+* Some knowledge of statistics, including Pearson correlation and principal component analysis (PCA)
 
-Much of the material can be found on the documentation websites of [`Voyager`](https://pachterlab.github.io/voyager/) and [`SpatialFeatureExperiment`](https://pachterlab.github.io/SpatialFeatureExperiment/). Relevant vignettes will be linked to in the following sections.
+The workshop material is taken from the documentation websites of [`Voyager`](https://pachterlab.github.io/voyager/) and [`SpatialFeatureExperiment`](https://pachterlab.github.io/SpatialFeatureExperiment/). Relevant vignettes will be linked to in the relevant sections.
 
 ### Participation
 
@@ -35,45 +35,46 @@ This workshop consists of hands on demos, exercises, and Q&A.
 
 Total: 90 minutes
 
-| Activity                     | Time |
-|------------------------------|------|
-| Introduction                 | 15m  |
-| Construct an SFE object      | 5m   |
-| Novel fields of SFE          | 10m  |
-| Geometric operations         | 10m  |
-| Visualization and QC         | 10m  |
-| Moran's I                    | 10m  |
-| Local Moran's I              | 10m  |
-| Lee's L                      | 10m  |
-| MULTISPATI PCA               | 10m  |
+| Activity                       | Time |
+|--------------------------------|------|
+| Introduction and setup         | 15m  |
+| Construct an SFE object        | 5m   |
+| Operations of SFE objects      | 15m  |
+| ESDA with geometric operations | 15m  |
+| Univariate global              | 10m  |
+| Univariate local               | 10m  |
+| Bivariate                      | 5m   |
+| Multivariate                   | 15m  |
 
 ### Workshop goals and objectives
 
-* Appreciate the opportunities presented by the spatial information
-* Learn basic spatial statistics
+* More thoroughly utilize spatial information
+* Introduction to spatial statistics
 
 #### What you will learn
-* Use and operate on `SpatialFeatureExperiment` (SFE) objects
+* Use and operate on SFE objects
 * Spatial data visualization
+* Geometric operations
 * Create spatial neighborhood graphs
 * Run spatial analyses on SFE objects
 * Visualize spatial analysis results
+* ESDA methods
 
 #### What you will _not_ learn
-* How different types of spatial transcriptomics technologies work
+* Technologies to collect spatial transcriptomics data
 * Data integration across multiple samples
 * Spatial multi-omics
 
 ## To use the Docker image
 
-This workshop can be run remotely on the [Orchestra platform](http://app.orchestra.cancerdatasci.org/). Alternatively, it can be run
+This workshop can be run remotely on the [Bioconductor Workshop Galaxy](https://workshop.bioconductor.org/). Alternatively, it can be run
 locally with the Docker image:
 
 ```sh
 docker run -e PASSWORD=<choose_a_password_for_rstudio> -p 8787:8787 ghcr.io/lambdamoses/voyagerworkshop
 ```
 
-Once running, navigate to http://localhost:8787/ and then login with `rstudio`:`yourchosenpassword`. 
+Once running, navigate to http://localhost:8787/ and then log in with `rstudio`:`yourchosenpassword`. 
 
-The required packages of the appropriate version as of August 2023 have been
-pre-installed on Orchestra and in the Docker image.
+The required packages of the appropriate version as of July 2023 have been
+pre-installed on the Workshop Galaxy and in the Docker image.
