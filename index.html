@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VoyagerWorkshop • VoyagerWorkshop</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -84,20 +84,21 @@
 <div class="section level3">
 <h3 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
 </h3>
-<p>The <code>SpatialFeatureExperiment</code> (SFE) class brings Simple Features as in the <code>sf</code> package to <code>SpatialExperiment</code> (SPE) and <code>SingleCellExperiment</code> (SCE). Simple Features are a standard way to represent geometries, and <code>sf</code> performs many geometric operations that can be used to derive cell or Visium spot metadata and to subset the SFE object. In this workshop, you will learn the novel features of SFE by interacting with the geometries and spatial neighborhood graphs, and by performing geometric operations.</p>
-<p>Then this workshop introduces exploratory spatial data analysis (ESDA) on the SFE object with the <code>Voyager</code> package. This includes visualizing data in space, and spatial statistics methods that exemplify each category of ESDA, including Moran’s I (univariate global), local Moran’s I (univariate local), Lee’s L (bivariate), and MULTISPATI PCA (multivariate).</p>
+<p>Exploratory spatial data analysis (ESDA) can be a powerful approach to understanding single-cell genomics datasets, but it is not yet part of standard data analysis workflows. In particular, geospatial analyses, which have been developed and refined for decades, have yet to be fully adapted and applied to spatial single-cell analysis. We introduce the <code>Voyager</code> platform, which systematically brings the geospatial ESDA tradition to (spatial) -omics, with local, bivariate, and multivariate spatial methods not yet commonly applied to spatial -omics, united by a uniform user interface. Using <code>Voyager</code>, we showcase biological insights that can be derived with its methods, such as biologically relevant negative spatial autocorrelation. Underlying <code>Voyager</code> is the <code>SpatialFeatureExperiment</code> (SFE) data structure, which combines Simple Feature with <code>SingleCellExperiment</code> and <code>AnnData</code> to represent and operate on geometries bundled with gene expression data. Voyager has comprehensive tutorials demonstrating ESDA built on GitHub Actions to ensure reproducibility and scalability, using data from popular commercial technologies. Voyager is implemented in both R/Bioconductor and Python/PyPI, and features compatibility tests to ensure that both implementations return consistent results.</p>
+<p>In this workshop, you will get hands on experiences on the R implementation of SFE and Voyager. First, you will learn to create and operate on SFE objects. Next you will perform various types of ESDA on an SFE object with Voyager, and learn the spatial statistics behind these methods. The workshop material points you to further reading on these methods. You can read more about Voyager in <a href="">this preprint</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="pre-requisites">Pre-requisites<a class="anchor" aria-label="anchor" href="#pre-requisites"></a>
 </h3>
-<p>List any workshop prerequisites, for example:</p>
+<p>This is an advanced workshop. You are expected to have:</p>
 <ul>
-<li>Basic knowledge of R syntax</li>
+<li>Intermediate knowledge of R syntax and <code>ggplot2</code>
+</li>
 <li>Familiarity with <code>SingleCellExperiment</code>
 </li>
-<li>Basic statistics such as Pearson correlation</li>
+<li>Some knowledge of statistics, including Pearson correlation and principal component analysis (PCA)</li>
 </ul>
-<p>Much of the material can be found on the documentation websites of <a href="https://pachterlab.github.io/voyager/" class="external-link"><code>Voyager</code></a> and <a href="https://pachterlab.github.io/SpatialFeatureExperiment/" class="external-link"><code>SpatialFeatureExperiment</code></a>. Relevant vignettes will be linked to in the following sections.</p>
+<p>The workshop material is taken from the documentation websites of <a href="https://pachterlab.github.io/voyager/" class="external-link"><code>Voyager</code></a> and <a href="https://pachterlab.github.io/SpatialFeatureExperiment/" class="external-link"><code>SpatialFeatureExperiment</code></a>. Relevant vignettes will be linked to in the relevant sections.</p>
 </div>
 <div class="section level3">
 <h3 id="participation">Participation<a class="anchor" aria-label="anchor" href="#participation"></a>
@@ -128,7 +129,7 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Introduction</td>
+<td>Introduction and setup</td>
 <td>15m</td>
 </tr>
 <tr class="even">
@@ -136,32 +137,28 @@
 <td>5m</td>
 </tr>
 <tr class="odd">
-<td>Novel fields of SFE</td>
+<td>Operations of SFE objects</td>
+<td>15m</td>
+</tr>
+<tr class="even">
+<td>ESDA with geometric operations</td>
+<td>15m</td>
+</tr>
+<tr class="odd">
+<td>Univariate global</td>
 <td>10m</td>
 </tr>
 <tr class="even">
-<td>Geometric operations</td>
+<td>Univariate local</td>
 <td>10m</td>
 </tr>
 <tr class="odd">
-<td>Visualization and QC</td>
-<td>10m</td>
+<td>Bivariate</td>
+<td>5m</td>
 </tr>
 <tr class="even">
-<td>Moran’s I</td>
-<td>10m</td>
-</tr>
-<tr class="odd">
-<td>Local Moran’s I</td>
-<td>10m</td>
-</tr>
-<tr class="even">
-<td>Lee’s L</td>
-<td>10m</td>
-</tr>
-<tr class="odd">
-<td>MULTISPATI PCA</td>
-<td>10m</td>
+<td>Multivariate</td>
+<td>15m</td>
 </tr>
 </tbody>
 </table>
@@ -170,25 +167,27 @@
 <h3 id="workshop-goals-and-objectives">Workshop goals and objectives<a class="anchor" aria-label="anchor" href="#workshop-goals-and-objectives"></a>
 </h3>
 <ul>
-<li>Appreciate the opportunities presented by the spatial information</li>
-<li>Learn basic spatial statistics</li>
+<li>More thoroughly utilize spatial information</li>
+<li>Introduction to spatial statistics</li>
 </ul>
 <div class="section level4">
 <h4 id="what-you-will-learn">What you will learn<a class="anchor" aria-label="anchor" href="#what-you-will-learn"></a>
 </h4>
 <ul>
-<li>Use and operate on <code>SpatialFeatureExperiment</code> (SFE) objects</li>
+<li>Use and operate on SFE objects</li>
 <li>Spatial data visualization</li>
+<li>Geometric operations</li>
 <li>Create spatial neighborhood graphs</li>
 <li>Run spatial analyses on SFE objects</li>
 <li>Visualize spatial analysis results</li>
+<li>ESDA methods</li>
 </ul>
 </div>
 <div class="section level4">
 <h4 id="what-you-will-not-learn">What you will <em>not</em> learn<a class="anchor" aria-label="anchor" href="#what-you-will-not-learn"></a>
 </h4>
 <ul>
-<li>How different types of spatial transcriptomics technologies work</li>
+<li>Technologies to collect spatial transcriptomics data</li>
 <li>Data integration across multiple samples</li>
 <li>Spatial multi-omics</li>
 </ul>
@@ -198,10 +197,10 @@
 <div class="section level2">
 <h2 id="to-use-the-docker-image">To use the Docker image<a class="anchor" aria-label="anchor" href="#to-use-the-docker-image"></a>
 </h2>
-<p>This workshop can be run remotely on the <a href="http://app.orchestra.cancerdatasci.org/" class="external-link">Orchestra platform</a>. Alternatively, it can be run locally with the Docker image:</p>
+<p>This workshop can be run remotely on the <a href="https://workshop.bioconductor.org/" class="external-link">Bioconductor Workshop Galaxy</a>. Alternatively, it can be run locally with the Docker image:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-e</span> PASSWORD=<span class="op">&lt;</span>choose_a_password_for_rstudio<span class="op">&gt;</span> -p 8787:8787 ghcr.io/lambdamoses/voyagerworkshop</span></code></pre></div>
-<p>Once running, navigate to <a href="http://localhost:8787/" class="external-link uri">http://localhost:8787/</a> and then login with <code>rstudio</code>:<code>yourchosenpassword</code>.</p>
-<p>The required packages of the appropriate version as of August 2023 have been pre-installed on Orchestra and in the Docker image.</p>
+<p>Once running, navigate to <a href="http://localhost:8787/" class="external-link uri">http://localhost:8787/</a> and then log in with <code>rstudio</code>:<code>yourchosenpassword</code>.</p>
+<p>The required packages of the appropriate version as of July 2023 have been pre-installed on the Workshop Galaxy and in the Docker image.</p>
 </div>
 </div>
   </div>
