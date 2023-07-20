@@ -122,6 +122,7 @@ presented at Bioc2023.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/thomasp85/scico" class="external-link">scico</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">pheatmap</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BiocNeighbors</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/LTLA/BiocSingular" class="external-link">BiocSingular</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">bluster</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
@@ -640,7 +641,7 @@ the data and loading it into R.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Graphs:</span></span>
 <span><span class="co">#&gt; Vis5A:</span></span></code></pre></div>
-<p>The H&amp;E image of this section: <img src="https://raw.githubusercontent.com/pachterlab/voyager/documentation/vignettes/tissue_lowres_5a.jpeg" alt="A cross section of mouse muscle is slightly off center to the lower left. In the middle of the tissue is the notexin injury site with leukocyte infiltration and fewer myofibers. The rest of the tissue section is tightly packed with myofibers."></p>
+<p>The H&amp;E image of this section: <img src="tissue_lowres_5a.jpeg" alt="A cross section of mouse muscle is slightly off center to the lower left. In the middle of the tissue is the notexin injury site with leukocyte infiltration and fewer myofibers. The rest of the tissue section is tightly packed with myofibers."></p>
 <p>The image can be added to the SFE object and plotted behind the
 geometries, and needs to be flipped to align to the spots because the
 origin is at the top left for the image but bottom left for
@@ -781,13 +782,13 @@ calculate the mean, median, or sum. This can be done with the
 <p>This reveals the relationship between the mean area of myofibers
 intersecting each Visium spot and other aspects of the spots, such as
 total counts and gene expression.</p>
-<p>The NAs designate spots not intersecting any myofibers, e.g. those in
-the inflammatory region.</p>
-<p>In the <a href="https://pachterlab.github.io/Voyager/articles/vig2_visium_basic.html" class="external-link">Basic
-Visium vignette</a>, we encountered two mysterious branches and two
-clusters in the nGenes vs. nCounts plot and the proportion of
-mitochondrial counts vs. nCounts plot. Now we see that the two clusters
-seem to be related to myofiber size.</p>
+<p>The NAs (gray) designate spots not intersecting any myofibers,
+e.g. those in the inflammatory region.</p>
+<p>The nGenes vs. nCounts plot is a standard QC plot in scRNA-seq, but
+here we see two mysterious branches and two clusters in the nGenes
+vs. nCounts plot and the proportion of mitochondrial counts vs. nCounts
+plot. The two branches or clusters seem to be related to myofiber
+size.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotColData.html" class="external-link">plotColData</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, x <span class="op">=</span> <span class="st">"nCounts"</span>, y <span class="op">=</span> <span class="st">"nGenes"</span>, colour_by <span class="op">=</span> <span class="st">"mean_myofiber_area"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="workshop_files/figure-html/unnamed-chunk-41-1.png" width="700"></p>
@@ -1074,7 +1075,9 @@ with the <code>BPPARAM</code> argument.</p>
 <span class="citation">(Geary 1954)</span>. This name should be used in
 the <code>type</code> argument in <code><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">runUnivariate()</a></code>.</li>
 <li>Compute Geary’s C on the highly variable genes, and show the
-results.</li>
+results. Interpretation of Geary’s C: a value below 1 indicates positive
+spatial autocorrelation, while a value above 1 indicates negative
+spatial autocorrelation.</li>
 </ol>
 </div>
 <div class="section level4">
@@ -4055,6 +4058,8 @@ the results. A sequential palette is appropriate.</li>
 <li>Which other columns are returned by LOSH? Plot one of them in space.
 See documentation of <code><a href="https://r-spatial.github.io/spdep/reference/LOSH.html" class="external-link">spdep::LOSH()</a></code> for the meanings of the
 other columns.</li>
+<li>How does the spatial pattern of LOSH compare to that of local Moran
+for the same genes?</li>
 </ol>
 </div>
 <div class="section level4">
@@ -4071,13 +4076,17 @@ is another ESDA tool. <code>Voyager</code> has a special function to
 plot the results <code><a href="https://rdrr.io/pkg/Voyager/man/moranPlot.html" class="external-link">moranPlot()</a></code>. See <a href="https://pachterlab.github.io/voyager/articles/moranplot_landing.html" class="external-link">these
 vignettes</a> for examples of Moran scatter plot applied to spatial
 transcriptomics.</li>
+<li>Analogous to the Moran scatter plot is the Geary scatter plot (not
+yet implemented in <code>Voyager</code>) proposed in <span class="citation">(Griffith and Chun 2022)</span> which is said to better
+detect local negative spatial autocorrelation. This paper also includes
+other considerations on Moran’s I and Geary’s C.</li>
 </ol>
 </div>
 </div>
 <div class="section level3">
 <h3 id="bivariate">Bivariate<a class="anchor" aria-label="anchor" href="#bivariate"></a>
 </h3>
-<p>Some spatial methods analyze how two variables relate A list of all
+<p>Some spatial methods analyze how two variables relate. A list of all
 bivariate global methods can be seen here:</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/listSFEMethods.html" class="external-link">listSFEMethods</a></span><span class="op">(</span>variate <span class="op">=</span> <span class="st">"bi"</span>, scope <span class="op">=</span> <span class="st">"global"</span><span class="op">)</span></span>
@@ -4135,8 +4144,9 @@ which can be plotted as a heatmap:</p>
 <span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scico/man/scico.html" class="external-link">scico</a></span><span class="op">(</span><span class="fl">256</span>, begin <span class="op">=</span> <span class="va">pal_rng</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, end <span class="op">=</span> <span class="va">pal_rng</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, palette <span class="op">=</span> <span class="st">"vik"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap</a></span><span class="op">(</span><span class="va">res</span>, color <span class="op">=</span> <span class="va">pal</span>, show_rownames <span class="op">=</span> <span class="cn">FALSE</span>, </span>
-<span>         show_colnames <span class="op">=</span> <span class="cn">FALSE</span>, cellwidth <span class="op">=</span> <span class="fl">1</span>, cellheight <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-67-1.png" width="576"></p>
+<span>         show_colnames <span class="op">=</span> <span class="cn">FALSE</span>, cellwidth <span class="op">=</span> <span class="fl">1</span>, cellheight <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>         treeheight_col <span class="op">=</span> <span class="fl">0</span>, treeheight_row <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<p><img src="workshop_files/figure-html/unnamed-chunk-67-1.png" width="528"></p>
 <p>Some coexpression blocks can be seen. Note that unlike in Pearson
 correlation, the diagonal is not 1, because</p>
 <p><span class="math display">\[
@@ -4188,12 +4198,13 @@ here:</p>
 <h4 id="non-spatial-pca">Non-spatial PCA<a class="anchor" aria-label="anchor" href="#non-spatial-pca"></a>
 </h4>
 <p>First we run regular principal component analysis (PCA), to compare
-to a type of spatially informed PCA known as MULTISPATI PCA <span class="citation">(Dray, Saı̈d, and Débias 2008)</span>.</p>
+to a type of spatially informed PCA known as MULTISPATI PCA <span class="citation">(Stéphane Dray, Saı̈d, and Débias 2008)</span>.</p>
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hvgs2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scran/man/getTopHVGs.html" class="external-link">getTopHVGs</a></span><span class="op">(</span><span class="va">dec</span>, n <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, ncomponents <span class="op">=</span> <span class="fl">20</span>, subset_row <span class="op">=</span> <span class="va">hvgs2</span>,</span>
-<span>                     exprs_values <span class="op">=</span> <span class="st">"logcounts"</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>                     exprs_values <span class="op">=</span> <span class="st">"logcounts"</span>, scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                     BSPARAM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/BiocSingularParam.html" class="external-link">IrlbaParam</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Use the elbow plot to see variance explained by each PC:</p>
 <div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/ElbowPlot.html" class="external-link">ElbowPlot</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span></span></code></pre></div>
@@ -4217,8 +4228,8 @@ myofibers, while PC2 and PC3 tease out the muscle tendon junctions.</p>
 <p>Spatially informed dimension reduction is actually not new, and dates
 back to at least 1985, with Wartenberg’s crossover of Moran’s I and PCA
 <span class="citation">(Wartenberg 1985)</span>, which was generalized
-and further developed as MULTISPATI PCA <span class="citation">(Dray,
-Saı̈d, and Débias 2008)</span>, implemented in the <a href="https://cran.r-project.org/web/packages/adespatial/index.html" class="external-link"><code>adespatial</code></a>
+and further developed as MULTISPATI PCA <span class="citation">(Stéphane
+Dray, Saı̈d, and Débias 2008)</span>, implemented in the <a href="https://cran.r-project.org/web/packages/adespatial/index.html" class="external-link"><code>adespatial</code></a>
 package on CRAN. In short, while PCA tries to maximize the variance
 explained by each PC, MULTISPATI maximizes the product of Moran’s I and
 variance explained. Also, while all the eigenvalues from PCA are
@@ -4389,6 +4400,19 @@ for spatial -omics data, although they tend to only consider positive
 spatial autocorrelation. For example, see <span class="citation">(Shang
 and Zhou 2022)</span> and <span class="citation">(Velten et al.
 2022)</span>.</li>
+<li>This paper discusses many other types of multivariate spatial
+analyses in ecology, besides MULTISPATI PCA <span class="citation">(S.
+Dray et al. 2012)</span>.</li>
+<li>MULTISPATI PCA can be thought of as in between two extremes. One
+extreme is standard PCA, which diagonalizes the covariance matrix. The
+other extreme is the Moran eigen map (MEM) <span class="citation">(Griffith 1996)</span>, which only uses the spatial
+weights matrix, without the data matrix. MEM is made by diagonalizing a
+double centered spatial weights matrix. Moran’s I is maximized for the
+first eigenvector, and then maximized for the second eigenvector given
+that it’s orthogonal to the first, and so on. The eigenvectors can be
+used as covariates in regression to account for spatial autocorrelation.
+See <a href="https://cran.r-project.org/web/packages/adespatial/vignettes/tutorial.html" class="external-link">this
+vignette of <code>adespatial</code></a> for examples in ecology.</li>
 </ol>
 </div>
 </div>
@@ -4396,8 +4420,8 @@ and Zhou 2022)</span> and <span class="citation">(Velten et al.
 <h3 id="caveats">Caveats<a class="anchor" aria-label="anchor" href="#caveats"></a>
 </h3>
 <ol style="list-style-type: decimal">
-<li>The H&amp;E image can alter perception of the colors of the
-geometries.</li>
+<li>The H&amp;E image plotted behind the geometries can alter perception
+of the colors of the geometries.</li>
 <li>Only 2D data is supported at present, although in principle,
 <code>sf</code> and <code>GEOS</code> support 3D data.</li>
 <li>This workshop demonstrates ESDA on a single sample. However, studies
@@ -4437,21 +4461,22 @@ group.</li>
 <span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] bluster_1.11.3                 BiocNeighbors_1.19.0          </span></span>
-<span><span class="co">#&gt;  [3] pheatmap_1.0.12                scico_1.4.0                   </span></span>
-<span><span class="co">#&gt;  [5] tidyr_1.3.0                    tibble_3.2.1                  </span></span>
-<span><span class="co">#&gt;  [7] BiocParallel_1.35.3            patchwork_1.1.2               </span></span>
-<span><span class="co">#&gt;  [9] scales_1.2.1                   sf_1.0-14                     </span></span>
-<span><span class="co">#&gt; [11] Matrix_1.6-0                   rjson_0.2.21                  </span></span>
-<span><span class="co">#&gt; [13] scater_1.29.0                  ggplot2_3.4.2                 </span></span>
-<span><span class="co">#&gt; [15] scran_1.29.0                   scuttle_1.11.0                </span></span>
-<span><span class="co">#&gt; [17] SFEData_1.3.0                  Voyager_1.3.0                 </span></span>
-<span><span class="co">#&gt; [19] SingleCellExperiment_1.23.0    SummarizedExperiment_1.31.1   </span></span>
-<span><span class="co">#&gt; [21] Biobase_2.61.0                 GenomicRanges_1.53.1          </span></span>
-<span><span class="co">#&gt; [23] GenomeInfoDb_1.37.2            IRanges_2.35.2                </span></span>
-<span><span class="co">#&gt; [25] S4Vectors_0.39.1               BiocGenerics_0.47.0           </span></span>
-<span><span class="co">#&gt; [27] MatrixGenerics_1.13.0          matrixStats_1.0.0             </span></span>
-<span><span class="co">#&gt; [29] SpatialFeatureExperiment_1.3.0</span></span>
+<span><span class="co">#&gt;  [1] bluster_1.11.3                 BiocSingular_1.17.1           </span></span>
+<span><span class="co">#&gt;  [3] BiocNeighbors_1.19.0           pheatmap_1.0.12               </span></span>
+<span><span class="co">#&gt;  [5] scico_1.4.0                    tidyr_1.3.0                   </span></span>
+<span><span class="co">#&gt;  [7] tibble_3.2.1                   BiocParallel_1.35.3           </span></span>
+<span><span class="co">#&gt;  [9] patchwork_1.1.2                scales_1.2.1                  </span></span>
+<span><span class="co">#&gt; [11] sf_1.0-14                      Matrix_1.6-0                  </span></span>
+<span><span class="co">#&gt; [13] rjson_0.2.21                   scater_1.29.0                 </span></span>
+<span><span class="co">#&gt; [15] ggplot2_3.4.2                  scran_1.29.0                  </span></span>
+<span><span class="co">#&gt; [17] scuttle_1.11.0                 SFEData_1.3.0                 </span></span>
+<span><span class="co">#&gt; [19] Voyager_1.3.0                  SingleCellExperiment_1.23.0   </span></span>
+<span><span class="co">#&gt; [21] SummarizedExperiment_1.31.1    Biobase_2.61.0                </span></span>
+<span><span class="co">#&gt; [23] GenomicRanges_1.53.1           GenomeInfoDb_1.37.2           </span></span>
+<span><span class="co">#&gt; [25] IRanges_2.35.2                 S4Vectors_0.39.1              </span></span>
+<span><span class="co">#&gt; [27] BiocGenerics_0.47.0            MatrixGenerics_1.13.0         </span></span>
+<span><span class="co">#&gt; [29] matrixStats_1.0.0              SpatialFeatureExperiment_1.3.0</span></span>
+<span><span class="co">#&gt; [31] BiocStyle_2.29.0              </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;   [1] later_1.3.1                   bitops_1.0-7                 </span></span>
@@ -4495,16 +4520,16 @@ group.</li>
 <span><span class="co">#&gt;  [77] spdep_1.2-8                   pkgconfig_2.0.3              </span></span>
 <span><span class="co">#&gt;  [79] gtable_0.3.3                  blob_1.2.4                   </span></span>
 <span><span class="co">#&gt;  [81] XVector_0.41.1                htmltools_0.5.5              </span></span>
-<span><span class="co">#&gt;  [83] png_0.1-8                     SpatialExperiment_1.11.0     </span></span>
-<span><span class="co">#&gt;  [85] knitr_1.43                    curl_5.0.1                   </span></span>
-<span><span class="co">#&gt;  [87] proxy_0.4-27                  cachem_1.0.8                 </span></span>
-<span><span class="co">#&gt;  [89] rhdf5_2.45.1                  stringr_1.5.0                </span></span>
-<span><span class="co">#&gt;  [91] BiocVersion_3.18.0            KernSmooth_2.23-22           </span></span>
-<span><span class="co">#&gt;  [93] parallel_4.3.1                vipor_0.4.5                  </span></span>
-<span><span class="co">#&gt;  [95] AnnotationDbi_1.63.2          desc_1.4.2                   </span></span>
-<span><span class="co">#&gt;  [97] s2_1.1.4                      pillar_1.9.0                 </span></span>
-<span><span class="co">#&gt;  [99] grid_4.3.1                    vctrs_0.6.3                  </span></span>
-<span><span class="co">#&gt; [101] promises_1.2.0.1              BiocSingular_1.17.1          </span></span>
+<span><span class="co">#&gt;  [83] bookdown_0.34                 png_0.1-8                    </span></span>
+<span><span class="co">#&gt;  [85] SpatialExperiment_1.11.0      knitr_1.43                   </span></span>
+<span><span class="co">#&gt;  [87] curl_5.0.1                    proxy_0.4-27                 </span></span>
+<span><span class="co">#&gt;  [89] cachem_1.0.8                  rhdf5_2.45.1                 </span></span>
+<span><span class="co">#&gt;  [91] stringr_1.5.0                 BiocVersion_3.18.0           </span></span>
+<span><span class="co">#&gt;  [93] KernSmooth_2.23-22            parallel_4.3.1               </span></span>
+<span><span class="co">#&gt;  [95] vipor_0.4.5                   AnnotationDbi_1.63.2         </span></span>
+<span><span class="co">#&gt;  [97] desc_1.4.2                    s2_1.1.4                     </span></span>
+<span><span class="co">#&gt;  [99] pillar_1.9.0                  grid_4.3.1                   </span></span>
+<span><span class="co">#&gt; [101] vctrs_0.6.3                   promises_1.2.0.1             </span></span>
 <span><span class="co">#&gt; [103] dbplyr_2.3.3                  beachmat_2.17.13             </span></span>
 <span><span class="co">#&gt; [105] xtable_1.8-4                  cluster_2.1.4                </span></span>
 <span><span class="co">#&gt; [107] beeswarm_0.4.0                evaluate_0.21                </span></span>
@@ -4542,6 +4567,12 @@ Analytical Perspectives on <span>GIS</span></em>, 111–26. Routledge.
 ———. 2019. <span>“A Local Indicator of Multivariate Spatial Association:
 Extending Geary’s c.”</span> <em>Geogr. Anal.</em> 51 (2): 133–50.
 </div>
+<div id="ref-Dray2012-on" class="csl-entry">
+Dray, S, R Pélissier, P Couteron, M-J Fortin, P Legendre, P R
+Peres-Neto, E Bellier, et al. 2012. <span>“Community Ecology in the Age
+of Multivariate Multiscale Spatial Analysis.”</span> <em>Ecol.
+Monogr.</em> 82 (3): 257–75.
+</div>
 <div id="ref-Dray2008-en" class="csl-entry">
 Dray, Stéphane, Sonia Saı̈d, and Françis Débias. 2008. <span>“Spatial
 Ordination of Vegetation Data Using a Generalization of Wartenberg’s
@@ -4563,10 +4594,24 @@ Anal.</em> 41 (4): 398–403.
 Geary, R C. 1954. <span>“The Contiguity Ratio and Statistical
 Mapping.”</span> <em>The Incorporated Statistician</em> 5 (3): 115–46.
 </div>
+<div id="ref-Griffith1996-gg" class="csl-entry">
+Griffith, Daniel A. 1996. <span>“<span>SPATIAL</span>
+<span>AUTOCORRELATION</span> and <span>EIGENFUNCTIONS</span>
+<span>OF</span> <span>THE</span> <span>GEOGRAPHIC</span>
+<span>WEIGHTS</span> <span>MATRIX</span> <span>ACCOMPANYING</span>
+<span>GEO-REFERENCED</span> <span>DATA</span>.”</span> <em>Can.
+Geogr.</em> 40 (4): 351–67.
+</div>
 <div id="ref-Griffith2019-bo" class="csl-entry">
-Griffith, Daniel A. 2019. <span>“Negative Spatial Autocorrelation: One
-of the Most Neglected Concepts in Spatial Statistics.”</span>
-<em>Stats</em> 2 (3): 388–415.
+———. 2019. <span>“Negative Spatial Autocorrelation: One of the Most
+Neglected Concepts in Spatial Statistics.”</span> <em>Stats</em> 2 (3):
+388–415.
+</div>
+<div id="ref-Griffith2022-lk" class="csl-entry">
+Griffith, Daniel A, and Yongwan Chun. 2022. <span>“Some Useful Details
+about the Moran Coefficient, the Geary Ratio, and the Join Count Indices
+of Spatial Autocorrelation.”</span> <em>Journal of Spatial
+Econometrics</em> 3 (1): 12.
 </div>
 <div id="ref-Griffith2006-kx" class="csl-entry">
 Griffith, Daniel A, and Robert Haining. 2006. <span>“Beyond Mule Kicks:
