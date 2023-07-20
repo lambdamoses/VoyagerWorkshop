@@ -1,9 +1,8 @@
 url: https://lambdamoses.github.io/VoaygerWorkshop
 
 template:
-  params:
-    bootswatch: cerulean
-    #ganalytics: UA-99999999-9
+  bootstrap: 5
+  bootswatch: cerulean
 
 home:
   title: "VoyagerWorkshop"
