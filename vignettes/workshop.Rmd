@@ -6,7 +6,13 @@ author:
     - name: "Lior Pachter"
       email: "lpachter@caltech.edu"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+    BiocStyle::html_document:
+        toc: true
+        number_sections: true
+        toc_depth: 3
+        toc_float:
+            collapsed: true
 bibliography: ref.bib
 vignette: >
   %\VignetteIndexEntry{Exploratory spatial data analysis with Voyager}
@@ -43,6 +49,7 @@ library(tidyr)
 library(scico)
 library(pheatmap)
 library(BiocNeighbors)
+library(BiocSingular)
 library(bluster)
 theme_set(theme_bw())
 ```
@@ -243,7 +250,7 @@ Tissue boundary, nuclei, myofiber, and Visium spot polygons are stored as `sf` d
 ```
 
 The H&E image of this section:
-![A cross section of mouse muscle is slightly off center to the lower left. In the middle of the tissue is the notexin injury site with leukocyte infiltration and fewer myofibers. The rest of the tissue section is tightly packed with myofibers.](https://raw.githubusercontent.com/pachterlab/voyager/documentation/vignettes/tissue_lowres_5a.jpeg)
+![A cross section of mouse muscle is slightly off center to the lower left. In the middle of the tissue is the notexin injury site with leukocyte infiltration and fewer myofibers. The rest of the tissue section is tightly packed with myofibers.](tissue_lowres_5a.jpeg)
 
 The image can be added to the SFE object and plotted behind the geometries, and needs to be flipped to align to the spots because the origin is at the top left for the image but bottom left for geometries.
 ```{r}
@@ -326,9 +333,9 @@ plotSpatialFeature(sfe_tissue, "mean_myofiber_area", "spotPoly", image = "lowres
 
 This reveals the relationship between the mean area of myofibers intersecting each Visium spot and other aspects of the spots, such as total counts and gene expression.
 
-The NAs designate spots not intersecting any myofibers, e.g. those in the inflammatory region. 
+The NAs (gray) designate spots not intersecting any myofibers, e.g. those in the inflammatory region. 
 
-In the [Basic Visium vignette](https://pachterlab.github.io/Voyager/articles/vig2_visium_basic.html), we encountered two mysterious branches and two clusters in the nGenes vs. nCounts plot and the proportion of mitochondrial counts vs. nCounts plot. Now we see that the two clusters seem to be related to myofiber size.
+The nGenes vs. nCounts plot is a standard QC plot in scRNA-seq, but here we see two mysterious branches and two clusters in the nGenes vs. nCounts plot and the proportion of mitochondrial counts vs. nCounts plot. The two branches or clusters seem to be related to myofiber size.
 ```{r}
 plotColData(sfe_tissue, x = "nCounts", y = "nGenes", colour_by = "mean_myofiber_area")
 ```
@@ -456,7 +463,7 @@ As Moran's I is very commonly used, `runMoransI(sfe_tissue, features = hvgs)` is
 
 ### Exercises
 1. Use `listSFEMethods()` to find the "name" of Geary's C [@Geary1954-fq]. This name should be used in the `type` argument in `runUnivariate()`.
-2. Compute Geary's C on the highly variable genes, and show the results.
+2. Compute Geary's C on the highly variable genes, and show the results. Interpretation of Geary's C: a value below 1 indicates positive spatial autocorrelation, while a value above 1 indicates negative spatial autocorrelation.
 
 ### Further reading
 1. Spatial transcriptomics data is usually much larger than the typical geospatial dataset back in the 1950s when Moran's I and Geary's C were devised. See [@uo2019-dk] for asymptotic properties of Moran's I for large datasets with normal and skewed distributions.
@@ -559,13 +566,15 @@ plotLocalResult(sfe_tissue, "localmoran", features = "Myh2",
 ### Exercises
 1. Compute local spatial heteroscedasticity (LOSH) [@Ord2012-qi] on Myh2 and plot the results. A sequential palette is appropriate.
 2. Which other columns are returned by LOSH? Plot one of them in space. See documentation of `spdep::LOSH()` for the meanings of the other columns.
+3. How does the spatial pattern of LOSH compare to that of local Moran for the same genes?
 
 ### Further reading
 1. Getis-Ord Gi\* [@Ord1995-we] is another commonly used local spatial statistic which identifies hotspots (high values clustered together in space) and coldspots (low values clostered in space). [These vignettes](https://pachterlab.github.io/voyager/articles/getisord_landing.html) use Getis-Ord Gi\*.
 2. The Moran scatter plot [@Anselin1996-mo] is another ESDA tool. `Voyager` has a special function to plot the results `moranPlot()`. See [these vignettes](https://pachterlab.github.io/voyager/articles/moranplot_landing.html) for examples of Moran scatter plot applied to spatial transcriptomics.
+3. Analogous to the Moran scatter plot is the Geary scatter plot (not yet implemented in `Voyager`) proposed in [@Griffith2022-lk] which is said to better detect local negative spatial autocorrelation. This paper also includes other considerations on Moran's I and Geary's C.
 
 ## Bivariate
-Some spatial methods analyze how two variables relate A list of all bivariate global methods can be seen here:
+Some spatial methods analyze how two variables relate. A list of all bivariate global methods can be seen here:
 ```{r}
 listSFEMethods(variate = "bi", scope = "global")
 ```
@@ -601,9 +610,10 @@ pal_rng <- getDivergeRange(res)
 pal <- scico(256, begin = pal_rng[1], end = pal_rng[2], palette = "vik")
 ```
 
-```{r, fig.width=6, fig.height=6}
+```{r, fig.width=5.5, fig.height=5.5}
 pheatmap(res, color = pal, show_rownames = FALSE, 
-         show_colnames = FALSE, cellwidth = 1, cellheight = 1)
+         show_colnames = FALSE, cellwidth = 1, cellheight = 1,
+         treeheight_col = 0, treeheight_row = 0)
 ```
 
 Some coexpression blocks can be seen. Note that unlike in Pearson correlation, the diagonal is not 1, because
@@ -642,7 +652,8 @@ hvgs2 <- getTopHVGs(dec, n = 2000)
 
 ```{r}
 sfe_tissue <- runPCA(sfe_tissue, ncomponents = 20, subset_row = hvgs2,
-                     exprs_values = "logcounts", scale = TRUE)
+                     exprs_values = "logcounts", scale = TRUE,
+                     BSPARAM = IrlbaParam())
 ```
 
 Use the elbow plot to see variance explained by each PC:
@@ -786,9 +797,11 @@ The lower and upper bounds of Moran's I are plotted as horizontal dashed line. I
 1. The other multivariate spatial method in Voyager as of Bioc 3.17 is a multivariate generalization of local Geary's C [@Anselin2019-uv].
 2. Unlike similar EDA packages for spatial -omics data, Voyager is extensible, so you can make the uniform user interface run other spatial methods, just like in [Tidymodels](https://www.tidymodels.org/learn/develop/models/). See [this vignette](https://pachterlab.github.io/voyager/articles/sfemethod) on extending Voyager.
 3. There are spatially informed dimension reduction methods designed for spatial -omics data, although they tend to only consider positive spatial autocorrelation. For example, see [@Shang2022-qy] and [@Velten2022-gv].
+4. This paper discusses many other types of multivariate spatial analyses in ecology, besides MULTISPATI PCA [@Dray2012-on].
+5. MULTISPATI PCA can be thought of as in between two extremes. One extreme is standard PCA, which diagonalizes the covariance matrix. The other extreme is the Moran eigen map (MEM) [@Griffith1996-gg], which only uses the spatial weights matrix, without the data matrix. MEM is made by diagonalizing a double centered spatial weights matrix. Moran's I is maximized for the first eigenvector, and then maximized for the second eigenvector given that it's orthogonal to the first, and so on. The eigenvectors can be used as covariates in regression to account for spatial autocorrelation. See [this vignette of `adespatial`](https://cran.r-project.org/web/packages/adespatial/vignettes/tutorial.html) for examples in ecology.
 
 ## Caveats
-1. The H&E image can alter perception of the colors of the geometries.
+1. The H&E image plotted behind the geometries can alter perception of the colors of the geometries.
 2. Only 2D data is supported at present, although in principle, `sf` and `GEOS` support 3D data.
 3. This workshop demonstrates ESDA on a single sample. However, studies often produce multiple biological replica in case and control groups. The ESDA results can be compared across samples, and in the next Bioc 3.18, computed jointly across samples within the same treatment group.
 
