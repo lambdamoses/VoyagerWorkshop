@@ -2,16 +2,17 @@ url: https://lambdamoses.github.io/VoaygerWorkshop
 
 template:
   bootstrap: 5
-  bootswatch: cerulean
-
+  bootswatch: united
+  bslib:
+    text-muted: "#cccccc"
 home:
   title: "VoyagerWorkshop"
   type: inverse
 
 
 navbar:
-  right:
-   - icon: fa-github
-     href: https://github.com/lambdamoses/VoyagerWorkshop
-
+  title: "VoyagerWorkshop"
+  left:
+    - text: "Workshop"
+      href: articles/workshop.html
 
