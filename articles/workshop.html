@@ -210,27 +210,16 @@ PCA</a> can be stored in <code>reducedDims</code>.</li>
 <h3 id="voyager">
 <code>Voyager</code><a class="anchor" aria-label="anchor" href="#voyager"></a>
 </h3>
-<div class="figure">
-<img src="voyager.png" alt="Schematics of the Voyager project" width="100%"><p class="caption">
-Schematics of the Voyager project
-</p>
-</div>
+<p><img src="voyager.png" alt="Schematics of the Voyager project" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="x-visium">10X Visium<a class="anchor" aria-label="anchor" href="#x-visium"></a>
 </h3>
 <p>As Visium from 10X Genomics is currently the most popular spatial
 transcriptomics technology, this workshop uses a Visium dataset.</p>
-<div class="float">
-<img src="https://pachterlab.github.io/LP_2021/04-current_files/figure-html/n-insts-1.png" alt="Bar chart showing the number of institutions using each spatial transcriptomics data collection method. Only methods used by at least 3 different institutions are shown. The bars are colored by category of the methods. 10X Visium which is based on sequence barcoding is used by almost 200 institutions. Following Visium are GeoMX DSP and GeoMX WTA which are “regions of interest” (ROI) methods, along with 2016 ST, MERFISH, and some other ROI selection methods."><div class="figcaption">Bar chart showing the number of institutions
-using each spatial transcriptomics data collection method. Only methods
-used by at least 3 different institutions are shown. The bars are
-colored by category of the methods. 10X Visium which is based on
-sequence barcoding is used by almost 200 institutions. Following Visium
-are GeoMX DSP and GeoMX WTA which are “regions of interest” (ROI)
-methods, along with 2016 ST, MERFISH, and some other ROI selection
-methods.</div>
-</div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"https://pachterlab.github.io/LP_2021/04-current_files/figure-html/n-insts-1.png"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="https://pachterlab.github.io/LP_2021/04-current_files/figure-html/n-insts-1.png" alt='Bar chart showing the number of institutions using each spatial transcriptomics data collection method. Only methods used by at least 3 different institutions are shown. The bars are colored by category of the methods. 10X Visium which is based on sequence barcoding is used by almost 200 institutions. Following Visium are GeoMX DSP and GeoMX WTA which are "regions of interest" (ROI) methods, along with 2016 ST, MERFISH, and some other ROI selection methods.'></p>
 <p>In Visium, capture sequences with spot barcode, unique molecule
 identifier (UMI), and polyT to capture poly-adenylated mRNAs are printed
 in a hexagonal array on a glass slide. Each spot barcode has a known
@@ -241,10 +230,9 @@ most types of cells, Visium does not have single cell resolution. Tissue
 is mounted on each of the 4 capture areas on the slide, and each capture
 area has 4992 spots. The spots capture the transcripts from the tissue,
 which are then reverse transcribed, amplified, and sequenced.</p>
-<div class="float">
-<img src="visium.png" alt="Intro to Visium, described in the previous paragraph"><div class="figcaption">Intro to Visium, described in the previous
-paragraph</div>
-</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"visium.png"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="visium.png" alt="Intro to Visium, described in the previous paragraph" width="833"></p>
 <p>Space Ranger is the official software to align the sequencing reads
 to the genome and quantify the UMIs in each spot for each gene. Spatial
 Ranger also takes in a histology image of the capture area, with which
@@ -267,7 +255,7 @@ column graph called <code>visium</code> will also be present for the
 spatial neighborhood graph of the Visium spots on the tissue. The graph
 is not computed if all spots are read in regardless of whether they are
 on tissue.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"SpatialFeatureExperiment"</span><span class="op">)</span></span>
 <span><span class="va">sample_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample01"</span>, <span class="st">"sample02"</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir</span>, <span class="va">sample_ids</span><span class="op">)</span><span class="op">)</span></span>
@@ -282,15 +270,15 @@ spots in tissue, and <code>spatial</code> has the spatial information.
 The matrix directories contain the matrices in MTX format as sparse
 matrices. Space Ranger also outputs the matrices as h5 files, which are
 read into R in a similar way as MTX.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">samples</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"outs"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "filtered_feature_bc_matrix" "spatial"</span></span></code></pre></div>
 <p>Inside the matrix directory:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">samples</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"outs"</span>, <span class="st">"filtered_feature_bc_matrix"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "barcodes.tsv" "features.tsv" "matrix.mtx"</span></span></code></pre></div>
 <p>Inside the <code>spatial</code> directory:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">samples</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"outs"</span>, <span class="st">"spatial"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "aligned_fiducials.jpg"              "barcode_fluorescence_intensity.csv"</span></span>
 <span><span class="co">#&gt; [3] "detected_tissue_image.jpg"          "scalefactors_json.json"            </span></span>
@@ -300,7 +288,7 @@ read into R in a similar way as MTX.</p>
 tissue. Not all Visium datasets have all the files here. The
 <code>barcode_fluorescence_intensity.csv</code> file is only present in
 datasets with fluorescent imaging rather than bright field H&amp;E.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">sfe3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/read10xVisiumSFE.html" class="external-link">read10xVisiumSFE</a></span><span class="op">(</span><span class="va">samples</span>, sample_id <span class="op">=</span> <span class="va">sample_ids</span>, type <span class="op">=</span> <span class="st">"sparse"</span>, </span>
 <span>                          data <span class="op">=</span> <span class="st">"filtered"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class: SpatialFeatureExperiment </span></span>
@@ -347,7 +335,7 @@ emulate <code>reducedDims</code> in internal implementation, while
 annotation geometries and spatial graphs differ. Operations on SFE
 objects are demonstrated on a small toy dataset (you may need to answer
 a prompt in the R console when downloading the dataset):</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">sfe</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SFEData/man/McKellarMuscleData.html" class="external-link">McKellarMuscleData</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"small"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; see ?SFEData and browseVignettes('SFEData') for documentation</span></span>
 <span><span class="co">#&gt; loading from cache</span></span>
@@ -388,7 +376,7 @@ obviously relevant, though users can add other geometries such as
 results of geometric operations on the spot polygons. The different
 geometries can be get or set with their names, and “spotPoly” is the
 standard name for Visium spot polygons.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get Visium spot polygons</span></span>
 <span><span class="op">(</span><span class="va">spots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/dimGeometries.html" class="external-link">colGeometry</a></span><span class="op">(</span><span class="va">sfe</span>, <span class="st">"spotPoly"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Simple feature collection with 77 features and 1 field</span></span>
@@ -408,21 +396,21 @@ standard name for Visium spot polygons.</p>
 <span><span class="co">#&gt; AATTCATAAGGGATCT POLYGON ((6889.769 14598.22...     Vis5A</span></span>
 <span><span class="co">#&gt; ACGAGTACGGATGCCC POLYGON ((5084.397 13395.63...     Vis5A</span></span>
 <span><span class="co">#&gt; ACGCTAGTGATACACT POLYGON ((5639.096 13394.44...     Vis5A</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">spots</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<p><img src="workshop_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set colGeometry</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/dimGeometries.html" class="external-link">colGeometry</a></span><span class="op">(</span><span class="va">sfe</span>, <span class="st">"spotPoly"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">spots</span></span></code></pre></div>
 <p>To see which <code>colGeometries</code> are present in the SFE
 object:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/dimGeometries.html" class="external-link">colGeometryNames</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "spotPoly"</span></span></code></pre></div>
 <p>There are shorthands for some specific column or row geometries. For
 example, <code>spotPoly(sfe)</code> is equivalent to
 <code>colGeometry(sfe, "spotPoly")</code> shown above.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Getter</span></span>
 <span><span class="op">(</span><span class="va">spots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/dimGeometries.html" class="external-link">spotPoly</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Simple feature collection with 77 features and 1 field</span></span>
@@ -442,7 +430,7 @@ example, <code>spotPoly(sfe)</code> is equivalent to
 <span><span class="co">#&gt; AATTCATAAGGGATCT POLYGON ((6889.769 14598.22...     Vis5A</span></span>
 <span><span class="co">#&gt; ACGAGTACGGATGCCC POLYGON ((5084.397 13395.63...     Vis5A</span></span>
 <span><span class="co">#&gt; ACGCTAGTGATACACT POLYGON ((5639.096 13394.44...     Vis5A</span></span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setter</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/dimGeometries.html" class="external-link">spotPoly</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">spots</span></span></code></pre></div>
 </div>
@@ -460,7 +448,7 @@ row or column of the gene count matrix respectively. In contrast, an
 <code>annotGeometry</code> <code>sf</code> data frame can have any
 dimension, not constrained by the dimension of the gene count
 matrix.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Getter, by name or index</span></span>
 <span><span class="op">(</span><span class="va">tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/annotGeometries.html" class="external-link">annotGeometry</a></span><span class="op">(</span><span class="va">sfe</span>, <span class="st">"tissueBoundary"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Simple feature collection with 1 feature and 2 fields</span></span>
@@ -470,15 +458,15 @@ matrix.</p>
 <span><span class="co">#&gt; CRS:           NA</span></span>
 <span><span class="co">#&gt;   ID                       geometry sample_id</span></span>
 <span><span class="co">#&gt; 7  7 POLYGON ((5094 13000, 5095 ...     Vis5A</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">tb</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p><img src="workshop_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setter, by name or index</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/annotGeometries.html" class="external-link">annotGeometry</a></span><span class="op">(</span><span class="va">sfe</span>, <span class="st">"tissueBoundary"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">tb</span></span></code></pre></div>
 <p>See which <code>annotGeometries</code> are present in the SFE
 object:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/annotGeometries.html" class="external-link">annotGeometryNames</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "tissueBoundary"      "myofiber_full"       "myofiber_simplified"</span></span>
 <span><span class="co">#&gt; [4] "nuclei"              "nuclei_centroid"</span></span></code></pre></div>
@@ -494,7 +482,7 @@ query <code>annotGeometries</code> (for array capture and
 microdissection technologies, equivalent to
 <code>annotGeometry(sfe, "cellSeg")</code> or
 <code>annotGeometry(sfe, "nucSeg")</code>).</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Getter</span></span>
 <span><span class="op">(</span><span class="va">tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/annotGeometries.html" class="external-link">tissueBoundary</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Simple feature collection with 1 feature and 2 fields</span></span>
@@ -504,7 +492,7 @@ microdissection technologies, equivalent to
 <span><span class="co">#&gt; CRS:           NA</span></span>
 <span><span class="co">#&gt;   ID                       geometry sample_id</span></span>
 <span><span class="co">#&gt; 7  7 POLYGON ((5094 13000, 5095 ...     Vis5A</span></span></code></pre></div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setter</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/annotGeometries.html" class="external-link">tissueBoundary</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">tb</span></span></code></pre></div>
 </div>
@@ -516,7 +504,7 @@ microdissection technologies, equivalent to
 <code>colGeometries</code>. SFE also wraps all methods to find the
 spatial neighborhood graph implemented in the <code>spdep</code>
 package, and triangulation is used here as demonstration.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/findSpatialNeighbors-SpatialFeatureExperiment-method.html" class="external-link">findSpatialNeighbors</a></span><span class="op">(</span><span class="va">sfe</span>, MARGIN <span class="op">=</span> <span class="fl">2</span>, method <span class="op">=</span> <span class="st">"tri2nb"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Characteristics of weights list object:</span></span>
 <span><span class="co">#&gt; Neighbour list object:</span></span>
@@ -529,13 +517,13 @@ package, and triangulation is used here as demonstration.</p>
 <span><span class="co">#&gt; Weights constants summary:</span></span>
 <span><span class="co">#&gt;    n   nn S0      S1       S2</span></span>
 <span><span class="co">#&gt; W 77 5929 77 28.0096 309.4083</span></span></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">g</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialExperiment/man/SpatialExperiment-methods.html" class="external-link">spatialCoords</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-24-1.png" width="700"></p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<p><img src="workshop_files/figure-html/unnamed-chunk-26-1.png" width="700"></p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set graph by name</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraph</a></span><span class="op">(</span><span class="va">sfe</span>, <span class="st">"graph1"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">g</span></span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get graph by name</span></span>
 <span><span class="op">(</span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraph</a></span><span class="op">(</span><span class="va">sfe</span>, <span class="st">"graph1"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Characteristics of weights list object:</span></span>
@@ -552,13 +540,13 @@ package, and triangulation is used here as demonstration.</p>
 <p>For Visium, spatial neighborhood graph of the hexagonal grid can be
 found with the known locations of the barcodes. One SFE object can have
 multiple <code>colGraphs</code>.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraph</a></span><span class="op">(</span><span class="va">sfe</span>, <span class="st">"visium"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/findVisiumGraph.html" class="external-link">findVisiumGraph</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraph</a></span><span class="op">(</span><span class="va">sfe</span>, <span class="st">"visium"</span><span class="op">)</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialExperiment/man/SpatialExperiment-methods.html" class="external-link">spatialCoords</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-28-1.png" width="700"></p>
-<p>Which graphs are present in this SFE object?</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraph</a></span><span class="op">(</span><span class="va">sfe</span>, <span class="st">"visium"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/findVisiumGraph.html" class="external-link">findVisiumGraph</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraph</a></span><span class="op">(</span><span class="va">sfe</span>, <span class="st">"visium"</span><span class="op">)</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialExperiment/man/SpatialExperiment-methods.html" class="external-link">spatialCoords</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="workshop_files/figure-html/unnamed-chunk-30-1.png" width="700"></p>
+<p>Which graphs are present in this SFE object?</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraphNames</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "graph1" "visium"</span></span></code></pre></div>
 <p>While this workshop only works with one sample, i.e. tissue section,
@@ -599,7 +587,7 @@ vignette of <code>SpatialFeatureExperiment</code></a> for more details
 on the structure of the SFE object. The SFE object of this dataset is
 provided in the <code>SFEData</code> package; we begin by downloading
 the data and loading it into R.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">sfe</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SFEData/man/McKellarMuscleData.html" class="external-link">McKellarMuscleData</a></span><span class="op">(</span><span class="st">"full"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; see ?SFEData and browseVignettes('SFEData') for documentation</span></span>
 <span><span class="co">#&gt; loading from cache</span></span>
@@ -626,12 +614,15 @@ the data and loading it into R.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Graphs:</span></span>
 <span><span class="co">#&gt; Vis5A:</span></span></code></pre></div>
-<p>The H&amp;E image of this section: <img src="tissue_lowres_5a.jpeg" alt="A cross section of mouse muscle is slightly off center to the lower left. In the middle of the tissue is the notexin injury site with leukocyte infiltration and fewer myofibers. The rest of the tissue section is tightly packed with myofibers."></p>
+<p>The H&amp;E image of this section:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"tissue_lowres_5a.jpeg"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="tissue_lowres_5a.jpeg" alt="A cross section of mouse muscle is slightly off center to the lower left. In the middle of the tissue is the notexin injury site with leukocyte infiltration and fewer myofibers. The rest of the tissue section is tightly packed with myofibers."></p>
 <p>The image can be added to the SFE object and plotted behind the
 geometries, and needs to be flipped to align to the spots because the
 origin is at the top left for the image but bottom left for
 geometries.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sfe</span> <span class="op">&lt;-</span> <span class="fu">addImg</span><span class="op">(</span><span class="va">sfe</span>, file <span class="op">=</span> <span class="st">"tissue_lowres_5a.jpeg"</span>, sample_id <span class="op">=</span> <span class="st">"Vis5A"</span>, </span>
 <span>              image_id <span class="op">=</span> <span class="st">"lowres"</span>, </span>
 <span>              scale_fct <span class="op">=</span> <span class="fl">1024</span><span class="op">/</span><span class="fl">22208</span><span class="op">)</span></span>
@@ -645,7 +636,7 @@ geometries.</p>
 </h4>
 <p>While the example dataset has all Visium spots whether on tissue or
 not, only spots that intersect tissue are used for further analyses.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "barcode"   "col"       "row"       "x"         "y"         "dia"      </span></span>
 <span><span class="co">#&gt;  [7] "tissue"    "sample_id" "nCounts"   "nGenes"    "prop_mito" "in_tissue"</span></span></code></pre></div>
@@ -682,10 +673,10 @@ artifact to be normalized away as in scRNA-seq data normalization
 methods. In other words, the issue of normalization for spatial
 transcriptomics data, and Visium in particular, is complex and is
 currently unsolved.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="va">sfe</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">sfe</span><span class="op">)</span><span class="op">$</span><span class="va">in_tissue</span><span class="op">]</span></span>
 <span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="va">sfe_tissue</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/dge.html" class="external-link">counts</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span>,<span class="op">]</span></span></code></pre></div>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#clusters &lt;- quickCluster(sfe_tissue)</span></span>
 <span><span class="co">#sfe_tissue &lt;- computeSumFactors(sfe_tissue, clusters=clusters)</span></span>
 <span><span class="co">#sfe_tissue &lt;- sfe_tissue[, sizeFactors(sfe_tissue) &gt; 0]</span></span>
@@ -694,7 +685,7 @@ currently unsolved.</p>
 dataset in the <code>annotGeometries</code> field. Myofibers were
 manually segmented, and nuclei were segmented with <a href="https://github.com/stardist/stardist" class="external-link"><code>StarDist</code></a>
 trained with a manually segmented subset.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/annotGeometries.html" class="external-link">annotGeometryNames</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "tissueBoundary"      "myofiber_full"       "myofiber_simplified"</span></span>
 <span><span class="co">#&gt; [4] "nuclei"              "nuclei_centroid"</span></span></code></pre></div>
@@ -720,13 +711,13 @@ to specify the values of an aesthstic, just like <code>aes</code> in
 <code>tidyeval</code> is not used here). The <code>annot_fixed</code>
 argument (not used here) can set the fixed size, alpha, color, and etc.
 for the <code>annotGeometry</code>.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotSpatialFeature.html" class="external-link">plotSpatialFeature</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, features <span class="op">=</span> <span class="st">"nCounts"</span>, </span>
 <span>                   colGeometryName <span class="op">=</span> <span class="st">"spotPoly"</span>,</span>
 <span>                   annotGeometryName <span class="op">=</span> <span class="st">"myofiber_simplified"</span>, </span>
 <span>                   aes_use <span class="op">=</span> <span class="st">"color"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span>, fill <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>                   annot_aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"area"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-36-1.png" alt="Plot of Visium spots in tissue and myofiber polygons in physical space. Visium spots are colored by nCounts, and myofibers are colored by area." width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-39-1.png" alt="Plot of Visium spots in tissue and myofiber polygons in physical space. Visium spots are colored by nCounts, and myofibers are colored by area." width="700"></p>
 <p>The larger myofibers seem to have fewer total counts, possibly
 because the larger size of these myofibers dilutes the transcripts. This
 hints at the need for a normalization procedure.</p>
@@ -736,15 +727,15 @@ be <a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" clas
 implemented in <code>sf</code></a>, so for example, the number of nuclei
 fully covered by each Visium spot can also be found. The default
 predicate is <code><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" class="external-link">st_intersects()</a></code>.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span><span class="op">$</span><span class="va">n_myofibers</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/annotPred.html" class="external-link">annotNPred</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, colGeometryName <span class="op">=</span> <span class="st">"spotPoly"</span>,</span>
 <span>             annotGeometryName <span class="op">=</span> <span class="st">"myofiber_simplified"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotSpatialFeature.html" class="external-link">plotSpatialFeature</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, features <span class="op">=</span> <span class="st">"n_myofibers"</span>, </span>
 <span>                   colGeometryName <span class="op">=</span> <span class="st">"spotPoly"</span>, image <span class="op">=</span> <span class="st">"lowres"</span>, color <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>                   linewidth <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-38-1.png" alt="Plot of Visium spots in tissue in physical space, colored by number of myofibers intersecting each spot." width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-41-1.png" alt="Plot of Visium spots in tissue in physical space, colored by number of myofibers intersecting each spot." width="700"></p>
 <p>There is no one-to-one mapping between Visium spots and myofibers.
 However, we can relate attributes of myofibers to gene expression
 detected at the Visium spots. One way to do so is to summarize the
@@ -755,15 +746,15 @@ calculate the mean, median, or sum. This can be done with the
 <code>SpatialFeatureExperiment</code>. The default predicate is
 <code><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" class="external-link">st_intersects()</a></code>, and the default summary function is
 <code><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean()</a></code>.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span><span class="op">$</span><span class="va">mean_myofiber_area</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/annotSummary.html" class="external-link">annotSummary</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"spotPoly"</span>, <span class="st">"myofiber_simplified"</span>, </span>
 <span>               annotColNames <span class="op">=</span> <span class="st">"area"</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="co"># it always returns a data frame</span></span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The gray spots don't intersect any myofiber</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotSpatialFeature.html" class="external-link">plotSpatialFeature</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"mean_myofiber_area"</span>, <span class="st">"spotPoly"</span>, image <span class="op">=</span> <span class="st">"lowres"</span>, </span>
 <span>                   color <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-40-1.png" alt="Plot of Visium spots in tissue in physical space, colored by the average area of myofibers that intersect each spot. The average area is higher near the mid-top right part of the tissue." width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-43-1.png" alt="Plot of Visium spots in tissue in physical space, colored by the average area of myofibers that intersect each spot. The average area is higher near the mid-top right part of the tissue." width="700"></p>
 <p>This reveals the relationship between the mean area of myofibers
 intersecting each Visium spot and other aspects of the spots, such as
 total counts and gene expression.</p>
@@ -774,12 +765,12 @@ here we see two mysterious branches and two clusters in the nGenes
 vs. nCounts plot and the proportion of mitochondrial counts vs. nCounts
 plot. The two branches or clusters seem to be related to myofiber
 size.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotColData.html" class="external-link">plotColData</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, x <span class="op">=</span> <span class="st">"nCounts"</span>, y <span class="op">=</span> <span class="st">"nGenes"</span>, colour_by <span class="op">=</span> <span class="st">"mean_myofiber_area"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-41-1.png" width="700"></p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<p><img src="workshop_files/figure-html/unnamed-chunk-44-1.png" width="700"></p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotColData.html" class="external-link">plotColData</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, x <span class="op">=</span> <span class="st">"nCounts"</span>, y <span class="op">=</span> <span class="st">"prop_mito"</span>, colour_by <span class="op">=</span> <span class="st">"mean_myofiber_area"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-42-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-45-1.png" width="700"></p>
 <div class="section level6">
 <h6 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
 </h6>
@@ -801,7 +792,7 @@ fast twitch, somewhat aerobic), Myh4 (Type IIb, fast twitch, anareobic),
 Myh1 (Type IIx, fast twitch, anaerobic), from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5526362/" class="external-link">this
 protocol</a> <span class="citation">(Wang, Yue, and Kuang
 2017)</span></p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">markers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>I <span class="op">=</span> <span class="st">"Myh7"</span>, IIa <span class="op">=</span> <span class="st">"Myh2"</span>, IIb <span class="op">=</span> <span class="st">"Myh4"</span>, IIx <span class="op">=</span> <span class="st">"Myh1"</span><span class="op">)</span></span></code></pre></div>
 <p>We first examine the Type I myofibers. This is a fast twitch muscle,
 so we don’t expect many slow twitch Type I myofibers. Row names in
@@ -816,13 +807,13 @@ column in <code>rowData(sfe)</code> that has the gene symbols are
 supplied in the <code>swap_rownames</code> argument. All function in
 <code>Voyager</code> that queries genes has the
 <code>swap_rownames</code> argument.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotSpatialFeature.html" class="external-link">plotSpatialFeature</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"Myh2"</span>, <span class="st">"spotPoly"</span>,</span>
 <span>                   annotGeometryName <span class="op">=</span> <span class="st">"myofiber_simplified"</span>, </span>
 <span>                   annot_aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"area"</span><span class="op">)</span>, swap_rownames <span class="op">=</span> <span class="st">"symbol"</span>, </span>
 <span>                   exprs_values <span class="op">=</span> <span class="st">"logcounts"</span>, aes_use <span class="op">=</span> <span class="st">"color"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>                   fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-44-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-47-1.png" width="700"></p>
 <div class="section level6">
 <h6 id="exercises-1">Exercises<a class="anchor" aria-label="anchor" href="#exercises-1"></a>
 </h6>
@@ -865,7 +856,7 @@ inflamed region, there are more singletons. We have not yet benchmarked
 spatial neighborhood construction methods to determine which is the
 “best” for different technologies; the particular method used here is
 for demonstration purposes and may not be the best in practice:</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraph</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"visium"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/findVisiumGraph.html" class="external-link">findVisiumGraph</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">annotGraph</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"myofiber_poly2nb"</span><span class="op">)</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/findSpatialNeighbors-SpatialFeatureExperiment-method.html" class="external-link">findSpatialNeighbors</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, type <span class="op">=</span> <span class="st">"myofiber_simplified"</span>, MARGIN <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -873,17 +864,17 @@ for demonstration purposes and may not be the best in practice:</p>
 <p>The <code><a href="https://rdrr.io/pkg/Voyager/man/plotColGraph.html" class="external-link">plotColGraph()</a></code> function plots the graph in space
 associated with a <code>colGeometry</code>, along with the geometry of
 interest.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotColGraph.html" class="external-link">plotColGraph</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, colGraphName <span class="op">=</span> <span class="st">"visium"</span>, colGeometryName <span class="op">=</span> <span class="st">"spotPoly"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-46-1.png" alt="Spatial neighborhood graph of Visium spots that intersect tissue." width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-49-1.png" alt="Spatial neighborhood graph of Visium spots that intersect tissue." width="700"></p>
 <p>Similarly, the <code><a href="https://rdrr.io/pkg/Voyager/man/plotColGraph.html" class="external-link">plotAnnotGraph()</a></code> function plots the graph
 associated with an <code>annotGeometry</code>, along with the geometry
 of interest.</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotColGraph.html" class="external-link">plotAnnotGraph</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, annotGraphName <span class="op">=</span> <span class="st">"myofiber_poly2nb"</span>, </span>
 <span>               annotGeometryName <span class="op">=</span> <span class="st">"myofiber_simplified"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-47-1.png" alt="Spatial neighborhood graph of myofibers, where each edge connects two myofibers that touch." width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-50-1.png" alt="Spatial neighborhood graph of myofibers, where each edge connects two myofibers that touch." width="700"></p>
 <p>There is no <code>plotRowGraph</code> yet since we haven’t worked
 with a dataset where spatial graphs related to genes are relevant,
 although the SFE object supports row graphs.</p>
@@ -931,7 +922,7 @@ corresponding function names in <code>spdep</code>, determines which
 spatial statistics are computed.</p>
 <p>All univariate global methods in <code>Voyager</code> are listed
 here:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/listSFEMethods.html" class="external-link">listSFEMethods</a></span><span class="op">(</span>variate <span class="op">=</span> <span class="st">"uni"</span>, scope <span class="op">=</span> <span class="st">"global"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;              name                                           description</span></span>
 <span><span class="co">#&gt; 1           moran                                             Moran's I</span></span>
@@ -952,7 +943,7 @@ frame returned by <code><a href="https://rdrr.io/pkg/Voyager/man/listSFEMethods.
 <p>To demonstrate spatial autocorrelation in gene expression, top highly
 variable genes (HVGs) are used. The HVGs are found with the
 <code>scran</code> method.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scran/man/modelGeneVar.html" class="external-link">modelGeneVar</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span></span>
 <span><span class="va">hvgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scran/man/getTopHVGs.html" class="external-link">getTopHVGs</a></span><span class="op">(</span><span class="va">dec</span>, n <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></code></pre></div>
 <p>A global statistic yields one result for the entire dataset.</p>
@@ -990,7 +981,7 @@ argument.</p>
 <p>For numeric columns of <code>colData(sfe)</code>, all univariate
 methods can be called with <code><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">colDataUnivariate()</a></code>. Here we
 compute Moran’s I for nCounts and nGenes:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">colDataUnivariate</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, type <span class="op">=</span> <span class="st">"moran"</span>, </span>
 <span>                                features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nCounts"</span>, <span class="st">"nGenes"</span><span class="op">)</span>,</span>
 <span>                                colGraphName <span class="op">=</span> <span class="st">"visium"</span><span class="op">)</span></span>
@@ -1012,7 +1003,7 @@ kurtosis of the data.</p>
 area of the cross section of each myofiber as seen in this tissue
 section and “eccentricity” is the eccentricity of the ellipse fitted to
 each myofiber.</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Remember zero.policy = TRUE since there're singletons</span></span>
 <span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">annotGeometryUnivariate</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, type <span class="op">=</span> <span class="st">"moran"</span>,</span>
 <span>                                      features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"area"</span>, <span class="st">"eccentricity"</span><span class="op">)</span>, </span>
@@ -1035,7 +1026,7 @@ assay), though this may or may not be best practice. If the metrics are
 computed for a large number of features, parallel computing is
 supported, with <a href="https://bioconductor.org/packages/release/bioc/html/BiocParallel.html" class="external-link"><code>BiocParallel</code></a>,
 with the <code>BPPARAM</code> argument.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">runUnivariate</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, type <span class="op">=</span> <span class="st">"moran"</span>, features <span class="op">=</span> <span class="va">hvgs</span>, </span>
 <span>                            colGraphName <span class="op">=</span> <span class="st">"visium"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">hvgs</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"moran_Vis5A"</span>, <span class="st">"K_Vis5A"</span>, <span class="st">"symbol"</span><span class="op">)</span><span class="op">]</span></span>
@@ -1106,7 +1097,7 @@ or <code><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/localResults.
 <code>SpatialFeatureExperiment</code> package.</p>
 <p>All univariate local methods in <code>Voyager</code> are listed
 here:</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/listSFEMethods.html" class="external-link">listSFEMethods</a></span><span class="op">(</span>variate <span class="op">=</span> <span class="st">"uni"</span>, scope <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               name                                          description</span></span>
 <span><span class="co">#&gt; 1       localmoran                                      Local Moran's I</span></span>
@@ -1138,29 +1129,29 @@ I_i = (n-1)\frac{(x_i - \bar{x})\sum_{j=1}^n w_{ij} (x_j -
 normalization by the sum of spatial weights. Local Moran’s I has been
 used in spatial transcriptomics in the MERINGUE package <span class="citation">(Miller et al. 2021)</span>. Here we compute local
 Moran’s I for the gene Myh2.</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">runUnivariate</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, type <span class="op">=</span> <span class="st">"localmoran"</span>, features <span class="op">=</span> <span class="st">"Myh2"</span>,</span>
 <span>                            colGraphName <span class="op">=</span> <span class="st">"visium"</span>, swap_rownames <span class="op">=</span> <span class="st">"symbol"</span><span class="op">)</span></span></code></pre></div>
 <p>It is useful to plot the log normalized Myh2 gene expression as
 context to interpret the local results:</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotSpatialFeature.html" class="external-link">plotSpatialFeature</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, features <span class="op">=</span> <span class="st">"Myh2"</span>, colGeometryName <span class="op">=</span> <span class="st">"spotPoly"</span>,</span>
 <span>                   swap_rownames <span class="op">=</span> <span class="st">"symbol"</span>, image_id <span class="op">=</span> <span class="st">"lowres"</span>, color <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>                   linewidth <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-55-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-58-1.png" width="700"></p>
 <p>Any local spatial results can be plotted with
 <code>plotLocalResults()</code>, which is similar to
 <code><a href="https://rdrr.io/pkg/Voyager/man/plotSpatialFeature.html" class="external-link">plotSpatialFeature()</a></code>. Here a divergent palette is used
 because Moran’s I has a sensible center at 0 (actually the expected
 value of Moran’s I is -1/(n-1) when the mean is unknown, but it’s very
 close to 0 as n is typically large in spatial -omics).</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotLocalResult.html" class="external-link">plotLocalResult</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"localmoran"</span>, features <span class="op">=</span> <span class="st">"Myh2"</span>, </span>
 <span>                colGeometryName <span class="op">=</span> <span class="st">"spotPoly"</span>, divergent <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                diverge_center <span class="op">=</span> <span class="fl">0</span>, image_id <span class="op">=</span> <span class="st">"lowres"</span>, </span>
 <span>                swap_rownames <span class="op">=</span> <span class="st">"symbol"</span>, color <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>                linewidth <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-56-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-59-1.png" width="700"></p>
 <p>We see that myofiber regions with higher Myh2 expression also have
 stronger spatial autocorrelation, while the injury site locally has some
 negative spatial autocorrelation.</p>
@@ -1169,7 +1160,7 @@ SFE object, with getters and setters analogous to
 <code>reducedDims</code>, but the name of the local method and the
 feature/gene for which the local method was run need to be specified as
 well.</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/localResults.html" class="external-link">localResults</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, name <span class="op">=</span> <span class="st">"localmoran"</span>, features <span class="op">=</span> <span class="st">"Myh2"</span>, </span>
 <span>                    swap_rownames <span class="op">=</span> <span class="st">"symbol"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $ENSMUSG00000033196</span></span>
@@ -3976,7 +3967,7 @@ well.</p>
 expression level, much as finding how variance relates to mean in the
 expression of each gene, which usually indicates overdispersion compared
 to Poisson in scRNA-seq and Visium data:</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>myh2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/assays.html" class="external-link">logcounts</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span><span class="op">$</span><span class="va">symbol</span> <span class="op">==</span> <span class="st">"Myh2"</span>,<span class="op">]</span>,</span>
 <span>                 Ii <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/localResults.html" class="external-link">localResult</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"localmoran"</span>, <span class="st">"Myh2"</span>, </span>
 <span>                                  swap_rownames <span class="op">=</span> <span class="st">"symbol"</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Ii"</span><span class="op">]</span><span class="op">)</span></span>
@@ -3984,7 +3975,7 @@ to Poisson in scRNA-seq and Visium data:</p>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">myh2</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span>, color <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0</span>, linetype <span class="op">=</span> <span class="fl">2</span>, color <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Myh2 (log counts)"</span>, y <span class="op">=</span> <span class="st">"localmoran"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-58-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-61-1.png" width="700"></p>
 <p>For this gene, Visium spots with higher expression also tend to have
 higher local Moran’s I, but this may or may not apply to other genes.
 The vertical dashed line marks the mean gene expression; note the
@@ -3996,7 +3987,7 @@ local spatial method, but other columns can be plotted as well. Use the
 <code><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/localResults.html" class="external-link">localResultAttrs()</a></code> function to see which columns are
 present, and use the <code>attribute</code> argument to specify which
 column to plot.</p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/localResults.html" class="external-link">localResultAttrs</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"localmoran"</span>, <span class="st">"Myh2"</span>, swap_rownames <span class="op">=</span> <span class="st">"symbol"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "Ii"             "E.Ii"           "Var.Ii"         "Z.Ii"          </span></span>
 <span><span class="co">#&gt;  [5] "Pr(z != E(Ii))" "mean"           "median"         "pysal"         </span></span>
@@ -4012,13 +4003,13 @@ multiple hypothesis testing with <code>p.adjustSP()</code> in
 <code>spdep</code>, where the number of tests is the number of neighbors
 of each location rather than the total number of locations
 (<code>-log10p_adj</code>).</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotLocalResult.html" class="external-link">plotLocalResult</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"localmoran"</span>, features <span class="op">=</span> <span class="st">"Myh2"</span>, </span>
 <span>                colGeometryName <span class="op">=</span> <span class="st">"spotPoly"</span>, attribute <span class="op">=</span> <span class="st">"-log10p_adj"</span>, divergent <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                diverge_center <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span>, swap_rownames <span class="op">=</span> <span class="st">"symbol"</span>,</span>
 <span>                image_id <span class="op">=</span> <span class="st">"lowres"</span>, color <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>                linewidth <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-60-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-63-1.png" width="700"></p>
 <p>In this plot and all following plots of p-values, a divergent palette
 is used to show locations that are significant after adjusting for
 multiple testing and those that are not significant in different colors.
@@ -4027,12 +4018,12 @@ significant while a dark blue means <em>really</em> not significant.</p>
 <p>The “pysal” column shows the type of neighborhood, such as whether
 low value is near other low values, or high value is near other high
 values.</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotLocalResult.html" class="external-link">plotLocalResult</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"localmoran"</span>, features <span class="op">=</span> <span class="st">"Myh2"</span>, </span>
 <span>                colGeometryName <span class="op">=</span> <span class="st">"spotPoly"</span>, attribute <span class="op">=</span> <span class="st">"pysal"</span>, </span>
 <span>                swap_rownames <span class="op">=</span> <span class="st">"symbol"</span>, image_id <span class="op">=</span> <span class="st">"lowres"</span>, color <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>                linewidth <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-61-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-64-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="exercises-3">Exercises<a class="anchor" aria-label="anchor" href="#exercises-3"></a>
@@ -4073,7 +4064,7 @@ other considerations on Moran’s I and Geary’s C.</li>
 </h3>
 <p>Some spatial methods analyze how two variables relate. A list of all
 bivariate global methods can be seen here:</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/listSFEMethods.html" class="external-link">listSFEMethods</a></span><span class="op">(</span>variate <span class="op">=</span> <span class="st">"bi"</span>, scope <span class="op">=</span> <span class="st">"global"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                  name                                     description</span></span>
 <span><span class="co">#&gt; 1                 lee                       Lee's bivariate statistic</span></span>
@@ -4082,7 +4073,7 @@ bivariate global methods can be seen here:</p>
 <span><span class="co">#&gt; 4     cross_variogram                                 Cross variogram</span></span>
 <span><span class="co">#&gt; 5 cross_variogram_map                             Cross variogram map</span></span></code></pre></div>
 <p>There are also local bivariate methods:</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/listSFEMethods.html" class="external-link">listSFEMethods</a></span><span class="op">(</span>variate <span class="op">=</span> <span class="st">"bi"</span>, scope <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            name                     description</span></span>
 <span><span class="co">#&gt; 1      locallee Local Lee's bivariate statistic</span></span>
@@ -4109,7 +4100,7 @@ implemented something like Lee’s L <span class="citation">(Dries et al.
 2021)</span>.</p>
 <p>Here we compute Lee’s L for top highly variagle genes (HVGs) in this
 dataset:</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hvgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scran/man/getTopHVGs.html" class="external-link">getTopHVGs</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, fdr.threshold <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></code></pre></div>
 <p>Because bivariate global results can have very different formats
 (matrix for Lee’s L and lists for many other methods), the results are
@@ -4120,18 +4111,18 @@ stores the results in the SFE object, but it only applies to local
 bivariate methods whose results have a more uniform format and are
 stored in the <code>localResults</code> field just like local univariate
 results.</p>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/calculateBivariate.html" class="external-link">calculateBivariate</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, type <span class="op">=</span> <span class="st">"lee"</span>, feature1 <span class="op">=</span> <span class="va">hvgs</span><span class="op">)</span></span></code></pre></div>
 <p>This gives a spatially informed correlation matrix among the genes,
 which can be plotted as a heatmap:</p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pal_rng</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/getDivergeRange.html" class="external-link">getDivergeRange</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scico/man/scico.html" class="external-link">scico</a></span><span class="op">(</span><span class="fl">256</span>, begin <span class="op">=</span> <span class="va">pal_rng</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, end <span class="op">=</span> <span class="va">pal_rng</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, palette <span class="op">=</span> <span class="st">"vik"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap</a></span><span class="op">(</span><span class="va">res</span>, color <span class="op">=</span> <span class="va">pal</span>, show_rownames <span class="op">=</span> <span class="cn">FALSE</span>, </span>
 <span>         show_colnames <span class="op">=</span> <span class="cn">FALSE</span>, cellwidth <span class="op">=</span> <span class="fl">1</span>, cellheight <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>         treeheight_col <span class="op">=</span> <span class="fl">0</span>, treeheight_row <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-67-1.png" width="528"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-70-1.png" width="528"></p>
 <p>Some coexpression blocks can be seen. Note that unlike in Pearson
 correlation, the diagonal is not 1, because</p>
 <p><span class="math display">\[
@@ -4173,7 +4164,7 @@ co-regulation. Hence we have multivariate spatial statistics, analyzing
 multiple genes simultaneously while taking spatial information into
 account. Multivariate spatial methods in <code>Voyager</code> are listed
 here:</p>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/listSFEMethods.html" class="external-link">listSFEMethods</a></span><span class="op">(</span><span class="st">"multi"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                name                                      description</span></span>
 <span><span class="co">#&gt; 1        multispati                                   MULTISPATI PCA</span></span>
@@ -4184,26 +4175,26 @@ here:</p>
 </h4>
 <p>First we run regular principal component analysis (PCA), to compare
 to a type of spatially informed PCA known as MULTISPATI PCA <span class="citation">(Stéphane Dray, Saı̈d, and Débias 2008)</span>.</p>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hvgs2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scran/man/getTopHVGs.html" class="external-link">getTopHVGs</a></span><span class="op">(</span><span class="va">dec</span>, n <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, ncomponents <span class="op">=</span> <span class="fl">20</span>, subset_row <span class="op">=</span> <span class="va">hvgs2</span>,</span>
 <span>                     exprs_values <span class="op">=</span> <span class="st">"logcounts"</span>, scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                     BSPARAM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/BiocSingularParam.html" class="external-link">IrlbaParam</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Use the elbow plot to see variance explained by each PC:</p>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/ElbowPlot.html" class="external-link">ElbowPlot</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-71-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-74-1.png" width="700"></p>
 <p>Plot top gene loadings in each PC, which are the contribution of each
 gene to each PC:</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotDimLoadings.html" class="external-link">plotDimLoadings</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, swap_rownames <span class="op">=</span> <span class="st">"symbol"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-72-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-75-1.png" width="700"></p>
 <p>Plot the first 4 PCs in space</p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/spatialReducedDim.html" class="external-link">spatialReducedDim</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"PCA"</span>, <span class="fl">4</span>, divergent <span class="op">=</span> <span class="cn">TRUE</span>, diverge_center <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>                  image_id <span class="op">=</span> <span class="st">"lowres"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-73-1.png" width="768"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-76-1.png" width="768"></p>
 <p>The first PC separates the leukocyte infiltrated injury site from the
 myofibers, while PC2 and PC3 tease out the muscle tendon junctions.</p>
 </div>
@@ -4237,7 +4228,7 @@ above is simplified just for PCA, without having to introduce the
 duality diagram here.</p>
 <p>Here we compute MULTISPATI PCA, with the 20 most positive and 20 most
 negative eigenvalues.</p>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/calculateMultivariate.html" class="external-link">runMultivariate</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"multispati"</span>, colGraphName <span class="op">=</span> <span class="st">"visium"</span>,</span>
 <span>                              nfposi <span class="op">=</span> <span class="fl">20</span>, nfnega <span class="op">=</span> <span class="fl">20</span>, subset_row <span class="op">=</span> <span class="va">hvgs2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE</span></span>
@@ -4249,9 +4240,9 @@ eigenvalues correspond to eigenvectors that simultaneously explain more
 variance and have large positive Moran’s I. The most negative
 eigenvalues correspond to eigenvectors that simultaneously explain more
 variance and have negative Moran’s I.</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/ElbowPlot.html" class="external-link">ElbowPlot</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, nfnega <span class="op">=</span> <span class="fl">20</span>, reduction <span class="op">=</span> <span class="st">"multispati"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-75-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-78-1.png" width="700"></p>
 <p>Here the positive eigenvalues drop sharply after, PC1, while none of
 the negative eigenvalues seem noteworthy. However, in spatial
 transcriptomics datasets with single cell resolution, there can be very
@@ -4268,15 +4259,15 @@ from each other as much as possible according to expression of the
 highly variable genes, so in theory, clustering with positive MULTISPATI
 components should give more spatially coherent clusters. Because of the
 spatial coherence, MULTISPATI might be more robust to outliers.</p>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotDimLoadings.html" class="external-link">plotDimLoadings</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, dims <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, reduction <span class="op">=</span> <span class="st">"multispati"</span>,</span>
 <span>                swap_rownames <span class="op">=</span> <span class="st">"symbol"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-76-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-79-1.png" width="700"></p>
 <p>Plot the these PCs:</p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/spatialReducedDim.html" class="external-link">spatialReducedDim</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"multispati"</span>, <span class="fl">4</span>, divergent <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                  diverge_center <span class="op">=</span> <span class="fl">0</span>, image_id <span class="op">=</span> <span class="st">"lowres"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-77-1.png" width="768"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-80-1.png" width="768"></p>
 <p>Here unlike in non-spatial PCA, PC4 continues to be spatially
 structured.</p>
 <div class="section level5">
@@ -4285,7 +4276,7 @@ structured.</p>
 <p>PCA embeddings are often used for clustering in scRNA-seq data
 analysis. Here we perform Leiden clustering on non-spatial and
 MULTISPATI PCA embeddings.</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">29</span><span class="op">)</span></span>
 <span><span class="va">sfe_tissue</span><span class="op">$</span><span class="va">clusts_nonspatial</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scran/man/clusterCells.html" class="external-link">clusterCells</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, use.dimred <span class="op">=</span> <span class="st">"PCA"</span>, </span>
 <span>                                             BLUSPARAM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bluster/man/NNGraphParam-class.html" class="external-link">NNGraphParam</a></span><span class="op">(</span></span>
@@ -4297,7 +4288,7 @@ MULTISPATI PCA embeddings.</p>
 <span>                                             <span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>See if clustering with the positive MULTISPATI PCs give more
 spatially coherent clusters</p>
-<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">29</span><span class="op">)</span></span>
 <span><span class="va">sfe_tissue</span><span class="op">$</span><span class="va">clusts_multispati</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bluster/man/clusterRows.html" class="external-link">clusterRows</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"multispati"</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, </span>
 <span>                                            BLUSPARAM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bluster/man/NNGraphParam-class.html" class="external-link">NNGraphParam</a></span><span class="op">(</span></span>
@@ -4308,11 +4299,11 @@ spatially coherent clusters</p>
 <span>                                                <span class="op">)</span></span>
 <span>                                            <span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Plot the clusters in space:</p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/plotSpatialFeature.html" class="external-link">plotSpatialFeature</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clusts_nonspatial"</span>, <span class="st">"clusts_multispati"</span><span class="op">)</span>, </span>
 <span>                   colGeometryName <span class="op">=</span> <span class="st">"spotPoly"</span><span class="op">)</span> <span class="op">&amp;</span></span>
 <span>     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">2</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-80-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-83-1.png" width="700"></p>
 </div>
 <div class="section level5">
 <h5 id="spatial-autocorrelation-of-principal-components">Spatial autocorrelation of principal components<a class="anchor" aria-label="anchor" href="#spatial-autocorrelation-of-principal-components"></a>
@@ -4326,12 +4317,12 @@ embeddings in reduced dimensions, with
 <code><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">reducedDimUnivariate()</a></code>, or for Moran’s I,
 <code><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">reducedDimMoransI()</a></code>. The arguments of all these functions
 are similar.</p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># non-spatial</span></span>
 <span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">reducedDimMoransI</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, dimred <span class="op">=</span> <span class="st">"PCA"</span>, components <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span></span>
 <span><span class="co"># spatial</span></span>
 <span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">reducedDimMoransI</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, dimred <span class="op">=</span> <span class="st">"multispati"</span>, components <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_moran</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>PCA <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/colFeatureData.html" class="external-link">reducedDimFeatureData</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"PCA"</span><span class="op">)</span><span class="op">$</span><span class="va">moran_Vis5A</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>,</span>
 <span>                   MULTISPATI_pos <span class="op">=</span> </span>
 <span>                       <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/colFeatureData.html" class="external-link">reducedDimFeatureData</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"multispati"</span><span class="op">)</span><span class="op">$</span><span class="va">moran_Vis5A</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>,</span>
@@ -4339,16 +4330,16 @@ are similar.</p>
 <span>                       <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/colFeatureData.html" class="external-link">reducedDimFeatureData</a></span><span class="op">(</span><span class="va">sfe_tissue</span>,<span class="st">"multispati"</span><span class="op">)</span><span class="op">$</span><span class="va">moran_Vis5A</span><span class="op">[</span><span class="fl">21</span><span class="op">:</span><span class="fl">40</span><span class="op">]</span> <span class="op">|&gt;</span> </span>
 <span>                       <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>                   index <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ditto_colors"</span><span class="op">)</span></span></code></pre></div>
 <p>These are the lower and upper bounds of Moran’s I given this spatial
 neighborhood graph according to <span class="citation">(Jong, Sprenger,
 and Veen 1984)</span>.</p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/moranBounds.html" class="external-link">moranBounds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraph</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"visium"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       Imin       Imax </span></span>
 <span><span class="co">#&gt; -0.5762132  1.0021884</span></span></code></pre></div>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_moran</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="op">-</span><span class="va">index</span>, values_to <span class="op">=</span> <span class="st">"value"</span>, names_to <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">index</span>, <span class="va">value</span>, color <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -4359,7 +4350,7 @@ and Veen 1984)</span>.</p>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/breaks_pretty.html" class="external-link">breaks_pretty</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/breaks_width.html" class="external-link">breaks_width</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Moran's I"</span>, color <span class="op">=</span> <span class="st">"Type"</span>, x <span class="op">=</span> <span class="st">"Component"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="workshop_files/figure-html/unnamed-chunk-85-1.png" width="700"></p>
+<p><img src="workshop_files/figure-html/unnamed-chunk-88-1.png" width="700"></p>
 <p>The lower and upper bounds of Moran’s I are plotted as horizontal
 dashed line. In non-spatial PCA, Moran’s I drops from PC1 to PC6, while
 Moran’s I remains high for the subsequent MULTISPATI PCs. Given the
@@ -4420,7 +4411,7 @@ group.</li>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.3.1 (2023-06-16)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
@@ -4461,7 +4452,7 @@ group.</li>
 <span><span class="co">#&gt; [25] IRanges_2.35.2                 S4Vectors_0.39.1              </span></span>
 <span><span class="co">#&gt; [27] BiocGenerics_0.47.0            MatrixGenerics_1.13.0         </span></span>
 <span><span class="co">#&gt; [29] matrixStats_1.0.0              SpatialFeatureExperiment_1.3.0</span></span>
-<span><span class="co">#&gt; [31] BiocStyle_2.29.0              </span></span>
+<span><span class="co">#&gt; [31] BiocStyle_2.29.1              </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;   [1] later_1.3.1                   bitops_1.0-7                 </span></span>
@@ -4493,7 +4484,7 @@ group.</li>
 <span><span class="co">#&gt;  [53] xfun_0.39                     dplyr_1.1.2                  </span></span>
 <span><span class="co">#&gt;  [55] HDF5Array_1.29.3              withr_2.5.0                  </span></span>
 <span><span class="co">#&gt;  [57] BiocManager_1.30.21.1         fastmap_1.1.1                </span></span>
-<span><span class="co">#&gt;  [59] boot_1.3-28.1                 rhdf5filters_1.13.4          </span></span>
+<span><span class="co">#&gt;  [59] boot_1.3-28.1                 rhdf5filters_1.13.5          </span></span>
 <span><span class="co">#&gt;  [61] fansi_1.0.4                   spData_2.3.0                 </span></span>
 <span><span class="co">#&gt;  [63] digest_0.6.33                 rsvd_1.0.5                   </span></span>
 <span><span class="co">#&gt;  [65] R6_2.5.1                      mime_0.12                    </span></span>
@@ -4522,7 +4513,7 @@ group.</li>
 <span><span class="co">#&gt; [111] locfit_1.5-9.8                compiler_4.3.1               </span></span>
 <span><span class="co">#&gt; [113] rlang_1.1.1                   crayon_1.5.2                 </span></span>
 <span><span class="co">#&gt; [115] labeling_0.4.2                classInt_0.4-9               </span></span>
-<span><span class="co">#&gt; [117] fs_1.6.2                      ggbeeswarm_0.7.2             </span></span>
+<span><span class="co">#&gt; [117] fs_1.6.3                      ggbeeswarm_0.7.2             </span></span>
 <span><span class="co">#&gt; [119] stringi_1.7.12                viridisLite_0.4.2            </span></span>
 <span><span class="co">#&gt; [121] deldir_1.0-9                  munsell_0.5.0                </span></span>
 <span><span class="co">#&gt; [123] Biostrings_2.69.2             ExperimentHub_2.9.1          </span></span>
