@@ -1,6 +1,6 @@
 Package: VoyagerWorkshop
 Title: Bioc2023 workshop for ESDA with Voyager
-Version: 0.0.99
+Version: 1.0.0
 Authors@R: 
     person(given = "Lambda",
            family = "Moses",
