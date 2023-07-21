@@ -10,11 +10,11 @@ In this workshop, you will get hands on experiences on the R implementation of S
 
 ### Pre-requisites
 
-This is an advanced workshop. You are expected to have:
+To understand the workshop material, you are expected to have:
 
 * Intermediate knowledge of R syntax and `ggplot2`
 * Familiarity with `SingleCellExperiment`
-* Some knowledge of statistics, including Pearson correlation and principal component analysis (PCA)
+* Familiarity with statistics and linear algebra, including principal component analysis (PCA)
 
 The workshop material is taken from the documentation websites of [`Voyager`](https://pachterlab.github.io/voyager/) and [`SpatialFeatureExperiment`](https://pachterlab.github.io/SpatialFeatureExperiment/). Relevant vignettes will be linked to in the relevant sections.
 
@@ -48,17 +48,17 @@ Total: 90 minutes
 
 ### Workshop goals and objectives
 
-* More thoroughly utilize spatial information
-* Introduction to spatial statistics
+* Experience exploratory data analysis with the spatial information front and center
+* Get a taste of the geospatial tradition
 
 #### What you will learn
 * Use and operate on SFE objects
 * Spatial data visualization
 * Geometric operations
 * Create spatial neighborhood graphs
-* Run spatial analyses on SFE objects
+* Run spatial analyses on different fields of SFE objects
 * Visualize spatial analysis results
-* ESDA methods
+* Math of some commonly used ESDA methods
 
 #### What you will _not_ learn
 * Technologies to collect spatial transcriptomics data
