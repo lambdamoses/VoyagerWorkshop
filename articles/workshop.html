@@ -940,6 +940,12 @@ variable genes (HVGs) are used. The HVGs are found with the
 <div class="section level4">
 <h4 id="morans-i">Moran’s I<a class="anchor" aria-label="anchor" href="#morans-i"></a>
 </h4>
+<p>As a reference, Pearson correlation is defined as</p>
+<p><span class="math display">\[
+\rho_{X,Y} = \frac{\sum_{i=1}^n\sum_{j=1}^n (x_i - \bar x)(y_i - \bar
+y)}{\sqrt{\sum_{i=1}^n (x_i - \bar x)^2}\sqrt{\sum_{i=1}^n (y_i - \bar
+y)^2}}.
+\]</span></p>
 <p>There are several ways to quantify spatial autocorrelation, the most
 common of which is Moran’s I <span class="citation">(Moran
 1950)</span>:</p>
@@ -950,11 +956,12 @@ I = \frac{n}{\sum_{i=1}^n \sum_{j=1}^n w_{ij}} \frac{\sum_{i=1}^n
 \]</span></p>
 <p>where <span class="math inline">\(n\)</span> is the number of spots
 or locations, <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are different locations, or spots in
-the Visium context, <span class="math inline">\(x\)</span> is a variable
-with values at each location, and <span class="math inline">\(w_{ij}\)</span> is a spatial weight, which can be
-inversely proportional to distance between spots or an indicator of
-whether two spots are neighbors, subject to various definitions of
-neighborhood and whether to normalize the number of neighbors. The <a href="https://r-spatial.github.io/spdep/index.html" class="external-link"><code>spdep</code></a>
+the Visium context, <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are variables with values at each
+location, and <span class="math inline">\(w_{ij}\)</span> is a spatial
+weight, which can be inversely proportional to distance between spots or
+an indicator of whether two spots are neighbors, subject to various
+definitions of neighborhood and whether to normalize the number of
+neighbors. The <a href="https://r-spatial.github.io/spdep/index.html" class="external-link"><code>spdep</code></a>
 package uses the neighborhood.</p>
 <p>Moran’s I is analogous to the Pearson correlation between the value
 at each location and the average value at its neighbors (but not
@@ -964,13 +971,11 @@ where positive value indicates positive spatial autocorrelation,
 i.e. nearby values tend to be more similar, and negative value indicates
 negative spatial autocorrelation, i.e. nearby values tend to be more
 dissimilar.</p>
-<p>Upon visual inspection, total UMI counts per spot (nCounts) seem to
-have spatial autocorrelation. A spatial neighborhood graph is required
-to compute Moran’s I, and is specified with the <code>listw</code>
-argument.</p>
-<p>For numeric columns of <code>colData(sfe)</code>, all univariate
-methods can be called with <code><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">colDataUnivariate()</a></code>. Here we
-compute Moran’s I for nCounts and nGenes:</p>
+<p>Upon visual inspection earlier in the workshop, total UMI counts per
+spot (nCounts) seem to have spatial autocorrelation. For numeric columns
+of <code>colData(sfe)</code>, all univariate methods can be called with
+<code><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">colDataUnivariate()</a></code>. Here we compute Moran’s I for nCounts
+and nGenes:</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">colDataUnivariate</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, type <span class="op">=</span> <span class="st">"moran"</span>, </span>
 <span>                                features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nCounts"</span>, <span class="st">"nGenes"</span><span class="op">)</span>,</span>
@@ -1018,7 +1023,7 @@ supported, with <a href="https://bioconductor.org/packages/release/bioc/html/Bio
 with the <code>BPPARAM</code> argument.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sfe_tissue</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/calculateUnivariate.html" class="external-link">runUnivariate</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, type <span class="op">=</span> <span class="st">"moran"</span>, features <span class="op">=</span> <span class="va">hvgs</span>, </span>
-<span>                            colGraphName <span class="op">=</span> <span class="st">"visium"</span><span class="op">)</span></span>
+<span>                            colGraphName <span class="op">=</span> <span class="st">"visium"</span>, BPPARAM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html" class="external-link">SerialParam</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">hvgs</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"moran_Vis5A"</span>, <span class="st">"K_Vis5A"</span>, <span class="st">"symbol"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; DataFrame with 6 rows and 3 columns</span></span>
 <span><span class="co">#&gt;                    moran_Vis5A   K_Vis5A      symbol</span></span>
@@ -1052,18 +1057,19 @@ spatial autocorrelation.</li>
 <ol style="list-style-type: decimal">
 <li>Spatial transcriptomics data is usually much larger than the typical
 geospatial dataset back in the 1950s when Moran’s I and Geary’s C were
-devised. See <span class="citation">(<strong>uo2019-dk?</strong>)</span>
-for asymptotic properties of Moran’s I for large datasets with normal
-and skewed distributions.</li>
+devised. See <a href="https://link.springer.com/article/10.1007/s10109-019-00293-3" class="external-link"><span class="citation">(Luo, Griffith, and Wu 2019)</span></a> for asymptotic
+properties of Moran’s I for large datasets with normal and skewed
+distributions.</li>
 <li>The negative binomial distribution is often used to model
 transcriptomics data due to bursts in transcription, although the
 Poisson distribution is sometimes used instead to simplify the math. See
-<span class="citation">(Griffith and Haining 2006)</span> for a
+<a href="https://onlinelibrary.wiley.com/doi/10.1111/j.0016-7363.2006.00679.x" class="external-link"><span class="citation">(Griffith and Haining 2006)</span></a> for a
 consideration of the Poisson distribution in spatial analyses.</li>
-<li>Moran’s I is not exactly the same as Pearson correlation. The bounds
-of Moran’s I depend on the spatial neighborhood graph. Usually the upper
+<li>Moran’s I is not exactly the same as Pearson correlation between the
+values themselves and the spatially smoothed values. The bounds of
+Moran’s I depend on the spatial neighborhood graph. Usually the upper
 bound is around 1, while the lower bound is closer to -0.5 than -1. See
-<span class="citation">(<strong>e_Jong1984-br?</strong>)</span> for a
+<a href="https://onlinelibrary.wiley.com/doi/10.1111/j.1538-4632.1984.tb00797.x" class="external-link"><span class="citation">(Jong, Sprenger, and Veen 1984)</span></a> for a
 derivation of extreme values of Moran’s I and Geary’s C.</li>
 <li>Spatial autocorrelation decays at different length scales for
 different features, and the correlogram is one way to find the length
@@ -1079,7 +1085,7 @@ scales.</li>
 </h3>
 <p>Local statistics yield a result at each location rather than the
 whole dataset, while global statistics may obscure local heterogeneity.
-See <span class="citation">(Fotheringham 2009)</span> for an interesting
+See <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/j.1538-4632.2009.00767.x" class="external-link"><span class="citation">(Fotheringham 2009)</span></a> for an interesting
 discussion of relationships between global and local spatial statistics.
 Local statistics are stored in the <code>localResults</code> field of
 the SFE object, which can be accessed by the <code><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/localResults.html" class="external-link">localResult()</a></code>
@@ -1109,8 +1115,7 @@ I = \frac{n}{\sum_{i=1}^n \sum_{j=1}^n w_{ij}} \frac{\sum_{i=1}^n
 \sum_{j=1}^n w_{ij} (x_i - \bar{x})(x_j - \bar{x})}{\sum_{i=1}^n (x_i -
 \bar{x})^2}.
 \]</span></p>
-<p>Local Moran’s I <span class="citation">(Anselin 1995)</span> is
-defined as</p>
+<p>Local Moran’s I <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1538-4632.1995.tb00338.x" class="external-link"><span class="citation">(Anselin 1995)</span></a> is defined as</p>
 <p><span class="math display">\[
 I_i = (n-1)\frac{(x_i - \bar{x})\sum_{j=1}^n w_{ij} (x_j -
 \bar{x})}{\sum_{i=1}^n (x_i - \bar{x})^2}.
@@ -4032,20 +4037,20 @@ for the same genes?</li>
 <h4 id="further-reading-1">Further reading<a class="anchor" aria-label="anchor" href="#further-reading-1"></a>
 </h4>
 <ol style="list-style-type: decimal">
-<li>Getis-Ord Gi* <span class="citation">(J. K. Ord and Getis
-1995)</span> is another commonly used local spatial statistic which
-identifies hotspots (high values clustered together in space) and
-coldspots (low values clostered in space). <a href="https://pachterlab.github.io/voyager/articles/getisord_landing.html" class="external-link">These
+<li>Getis-Ord Gi* <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1538-4632.1995.tb00912.x" class="external-link"><span class="citation">(J. K. Ord and Getis 1995)</span></a> is another
+commonly used local spatial statistic which identifies hotspots (high
+values clustered together in space) and coldspots (low values clostered
+in space). <a href="https://pachterlab.github.io/voyager/articles/getisord_landing.html" class="external-link">These
 vignettes</a> use Getis-Ord Gi*.</li>
-<li>The Moran scatter plot <span class="citation">(Anselin 1996)</span>
-is another ESDA tool. <code>Voyager</code> has a special function to
-plot the results <code><a href="https://rdrr.io/pkg/Voyager/man/moranPlot.html" class="external-link">moranPlot()</a></code>. See <a href="https://pachterlab.github.io/voyager/articles/moranplot_landing.html" class="external-link">these
+<li>The Moran scatter plot <a href="https://www.taylorfrancis.com/chapters/edit/10.1201/9780203739051-8/moran-scatterplot-esda-tool-assess-local-instability-spatial-association-luc-anselin" class="external-link"><span class="citation">(Anselin 1996)</span></a> is another ESDA tool.
+<code>Voyager</code> has a special function to plot the results
+<code><a href="https://rdrr.io/pkg/Voyager/man/moranPlot.html" class="external-link">moranPlot()</a></code>. See <a href="https://pachterlab.github.io/voyager/articles/moranplot_landing.html" class="external-link">these
 vignettes</a> for examples of Moran scatter plot applied to spatial
 transcriptomics.</li>
 <li>Analogous to the Moran scatter plot is the Geary scatter plot (not
-yet implemented in <code>Voyager</code>) proposed in <span class="citation">(Griffith and Chun 2022)</span> which is said to better
-detect local negative spatial autocorrelation. This paper also includes
-other considerations on Moran’s I and Geary’s C.</li>
+yet implemented in <code>Voyager</code>) proposed in <a href="https://link.springer.com/article/10.1007/s43071-022-00031-w" class="external-link"><span class="citation">(Griffith and Chun 2022)</span></a> which is said to
+better detect local negative spatial autocorrelation. This paper also
+includes other considerations on Moran’s I and Geary’s C.</li>
 </ol>
 </div>
 </div>
@@ -4071,8 +4076,8 @@ bivariate global methods can be seen here:</p>
 <div class="section level4">
 <h4 id="lees-l">Lee’s L<a class="anchor" aria-label="anchor" href="#lees-l"></a>
 </h4>
-<p>Lee’s L <span class="citation">(Lee 2001)</span> was developed from
-relating Moran’s I to Pearson correlation, and is defined as</p>
+<p>Lee’s L <a href="https://link.springer.com/article/10.1007/s101090100064" class="external-link"><span class="citation">(Lee 2001)</span></a> was developed from relating
+Moran’s I to Pearson correlation, and is defined as</p>
 <p><span class="math display">\[
 L_{X,Y} = \frac{n}{\sum_{i=1}^n \sum_{j=1}^n w_{ij}} \frac{\sum_{i=1}^n
 \left[ \sum_{j=1}^n w_{ij}  (x_j - \bar{x}) \right] \left[ \sum_{j=1}^n
@@ -4126,7 +4131,7 @@ than 1. This is the spatial smoothing scalar (SSS), and Moran’s I is
 approximately Pearson correlation between <span class="math inline">\(X\)</span> and spatially lagged <span class="math inline">\(X\)</span> (<span class="math inline">\(\tilde
 X\)</span>) multiplied by SSS:</p>
 <p><span class="math display">\[
-I = \mathrm{SSS}_X \cdot \rho_{X, \tilde X}
+I \approx \mathrm{SSS}_X \cdot \rho_{X, \tilde X}
 \]</span></p>
 <p>Similarly for Lee’s L, as shown in <span class="citation">(Lee
 2001)</span>,</p>
@@ -4135,12 +4140,30 @@ L_{X, Y} = \sqrt{\mathrm{SSS}_X}\sqrt{\mathrm{SSS}_Y} \cdot \rho_{\tilde
 X, \tilde Y}
 \]</span></p>
 <p>With more spatial clustering, the variance is less reduced by the
-spatial lag, leading to a larger SSS.</p>
+spatial lag, leading to a larger SSS. Hence when both <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are spatially distributed like salt and
+pepper while strongly correlated, Lee’s L will be low because the lack
+of spatial autocorrelation leads to a small SSS.</p>
 <p>Weighted correlation network analysis (WGCNA) <span class="citation">(Langfelder and Horvath 2008)</span> is a time honored
 method to find gene co-expression modules, and it can take any
 correlation matrix. Then it would be interesting to apply WGCNA to the
 Lee’s L matrix to identify spatially informed gene co-expression
 modules.</p>
+</div>
+<div class="section level4">
+<h4 id="exercises-4">Exercises<a class="anchor" aria-label="anchor" href="#exercises-4"></a>
+</h4>
+<p>Local Lee’s L is analogous to local Moran’s I – a disaggregated form
+of Lee’s L showing the contribution of each spot to the global Lee’s L.
+This is derived in <span class="citation">(Lee 2001)</span> after global
+Lee’s L is shown.</p>
+<p>Run local Lee’s L on two genes of your choice. You can use the
+myofiber type marker genes Myh7, Myh2, Myh4, and Myh1. Then plot the
+results in space. Hint: Use <code><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/localResults.html" class="external-link">localResultFeatures()</a></code> to find
+what name the results are stored under. How would you interpret the
+results?</p>
+<p>See <a href="https://pachterlab.github.io/voyager/articles/bivariate.html" class="external-link">this
+vignette</a> on bivariate methods in Voyager applied to this dataset,
+including local Lee’s L and a bivariate version of local Moran’s I.</p>
 </div>
 </div>
 <div class="section level3">
@@ -4193,9 +4216,9 @@ myofibers, while PC2 and PC3 tease out the muscle tendon junctions.</p>
 </h4>
 <p>Spatially informed dimension reduction is actually not new, and dates
 back to at least 1985, with Wartenberg’s crossover of Moran’s I and PCA
-<span class="citation">(Wartenberg 1985)</span>, which was generalized
-and further developed as MULTISPATI PCA <span class="citation">(Stéphane
-Dray, Saı̈d, and Débias 2008)</span>, implemented in the <a href="https://cran.r-project.org/web/packages/adespatial/index.html" class="external-link"><code>adespatial</code></a>
+<a href="https://onlinelibrary.wiley.com/doi/10.1111/j.1538-4632.1985.tb00849.x" class="external-link"><span class="citation">(Wartenberg 1985)</span></a>, which was generalized and
+further developed as MULTISPATI PCA <a href="https://onlinelibrary.wiley.com/doi/10.3170/2007-8-18312" class="external-link"><span class="citation">(Stéphane Dray, Saı̈d, and Débias 2008)</span></a>,
+implemented in the <a href="https://cran.r-project.org/web/packages/adespatial/index.html" class="external-link"><code>adespatial</code></a>
 package on CRAN. In short, while PCA tries to maximize the variance
 explained by each PC, MULTISPATI maximizes the product of Moran’s I and
 variance explained. Also, while all the eigenvalues from PCA are
@@ -4203,7 +4226,7 @@ non-negative, because the covariance matrix is positive semidefinite,
 MULTISPATI can give negative eigenvalues, which represent negative
 spatial autocorrelation, which can be present and interesting but is not
 as common as positive spatial autocorrelation and is often masked by the
-latter <span class="citation">(Griffith 2019)</span>.</p>
+latter <a href="https://www.mdpi.com/2571-905X/2/3/27" class="external-link"><span class="citation">(Griffith 2019)</span></a>.</p>
 <p>In single cell -omics conventions, let <span class="math inline">\(X\)</span> denote a gene count matrix whose
 columns are cells or Visium spots and whose rows are genes, with <span class="math inline">\(n\)</span> columns. Let <span class="math inline">\(W\)</span> denote the row normalized <span class="math inline">\(n\times n\)</span> adjacency matrix of the spatial
 neighborhood graph of the cells or Visium spots, which does not have to
@@ -4326,7 +4349,8 @@ are similar.</p>
 neighborhood graph according to <span class="citation">(Jong, Sprenger,
 and Veen 1984)</span>.</p>
 <div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">mb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/moranBounds.html" class="external-link">moranBounds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraph</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"visium"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Takes a while if not using optimized BLAS</span></span>
+<span><span class="op">(</span><span class="va">mb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Voyager/man/moranBounds.html" class="external-link">moranBounds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialFeatureExperiment/man/spatialGraphs.html" class="external-link">colGraph</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"visium"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       Imin       Imax </span></span>
 <span><span class="co">#&gt; -0.5762132  1.0021884</span></span></code></pre></div>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
@@ -4351,11 +4375,21 @@ which means that these PCs explain very little variance.</p>
 </div>
 </div>
 <div class="section level4">
+<h4 id="exercises-5">Exercises<a class="anchor" aria-label="anchor" href="#exercises-5"></a>
+</h4>
+<p>Thought experiment: suppose you perform standard PCA and MULTISPATI
+PCA on your city, such as on buildings, demographics, or when the city
+is divided into pixels, on whichever spatial features you find relevant
+to your life. What would the principal components look like? How would
+MULTISPATI PC’s differ from the standard PC’s?</p>
+</div>
+<div class="section level4">
 <h4 id="further-reading-2">Further reading<a class="anchor" aria-label="anchor" href="#further-reading-2"></a>
 </h4>
 <ol style="list-style-type: decimal">
 <li>The other multivariate spatial method in Voyager as of Bioc 3.17 is
-a multivariate generalization of local Geary’s C <span class="citation">(Anselin 2019)</span>.</li>
+a multivariate generalization of local Geary’s C <a href="https://onlinelibrary.wiley.com/doi/10.1111/gean.12164" class="external-link"><span class="citation">(Anselin 2019)</span></a>. See <a href="https://pachterlab.github.io/voyager/articles/localc.html" class="external-link">this
+vignette</a> on its application to this dataset.</li>
 <li>Unlike similar EDA packages for spatial -omics data, Voyager is
 extensible, so you can make the uniform user interface run other spatial
 methods, just like in <a href="https://www.tidymodels.org/learn/develop/models/" class="external-link">Tidymodels</a>.
@@ -4363,21 +4397,24 @@ See <a href="https://pachterlab.github.io/voyager/articles/sfemethod" class="ext
 vignette</a> on extending Voyager.</li>
 <li>There are spatially informed dimension reduction methods designed
 for spatial -omics data, although they tend to only consider positive
-spatial autocorrelation. For example, see <span class="citation">(Shang
-and Zhou 2022)</span> and <span class="citation">(Velten et al.
-2022)</span>.</li>
+spatial autocorrelation. For example, see <a href="https://www.nature.com/articles/s41467-022-34879-1" class="external-link"><span class="citation">(Shang and Zhou 2022)</span></a> and <a href="https://www.nature.com/articles/s41592-021-01343-9" class="external-link"><span class="citation">(Velten et al. 2022)</span></a>.</li>
 <li>This paper discusses many other types of multivariate spatial
-analyses in ecology, besides MULTISPATI PCA <span class="citation">(S.
-Dray et al. 2012)</span>.</li>
+analyses in ecology, besides MULTISPATI PCA <a href="https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1890/11-1183.1" class="external-link"><span class="citation">(S. Dray et al. 2012)</span></a>.</li>
 <li>MULTISPATI PCA can be thought of as in between two extremes. One
 extreme is standard PCA, which diagonalizes the covariance matrix. The
-other extreme is the Moran eigen map (MEM) <span class="citation">(Griffith 1996)</span>, which only uses the spatial
-weights matrix, without the data matrix. MEM is made by diagonalizing a
-double centered spatial weights matrix. Moran’s I is maximized for the
-first eigenvector, and then maximized for the second eigenvector given
-that it’s orthogonal to the first, and so on. The eigenvectors can be
-used as covariates in regression to account for spatial autocorrelation.
-See <a href="https://cran.r-project.org/web/packages/adespatial/vignettes/tutorial.html" class="external-link">this
+other extreme is the Moran eigen map (MEM) <a href="https://onlinelibrary.wiley.com/doi/10.1111/j.1541-0064.1996.tb00462.x" class="external-link"><span class="citation">(Griffith 1996)</span></a>, which only uses the spatial
+weights matrix, without the data matrix. MEM’s are made by diagonalizing
+a double centered spatial weights matrix. The first eigenvector has
+values that make the largest possible Moran’s I given the spatial
+neighborhood graph. The second eigenvector also maximizes Moran’s I
+given that it’s orthogonal to the first eigenvector, and so on. The
+eigenvalues are Moran’s I multiplied by a constant. The last eigenvector
+has the most negative Moran’s I given the spatial neighborhood graph.
+These eigenvectors, or MEM’s, represent spatial structures of different
+length scales, which can be selected and used as covariates in
+regression to account for spatial autocorrelation, in a procedure called
+spatial filtering <span class="citation">(Griffith 2000; Griffith and
+Peres-Neto 2006)</span>. See <a href="https://cran.r-project.org/web/packages/adespatial/vignettes/tutorial.html" class="external-link">this
 vignette of <code>adespatial</code></a> for examples in ecology.</li>
 </ol>
 </div>
@@ -4568,6 +4605,10 @@ Griffith, Daniel A. 1996. <span>“<span>SPATIAL</span>
 <span>GEO-REFERENCED</span> <span>DATA</span>.”</span> <em>Can.
 Geogr.</em> 40 (4): 351–67.
 </div>
+<div id="ref-Griffith2000-mn" class="csl-entry">
+———. 2000. <span>“A Linear Regression Solution to the Spatial
+Autocorrelation Problem.”</span> <em>J. Geogr. Syst.</em> 2 (2): 141–56.
+</div>
 <div id="ref-Griffith2019-bo" class="csl-entry">
 ———. 2019. <span>“Negative Spatial Autocorrelation: One of the Most
 Neglected Concepts in Spatial Statistics.”</span> <em>Stats</em> 2 (3):
@@ -4583,6 +4624,11 @@ Econometrics</em> 3 (1): 12.
 Griffith, Daniel A, and Robert Haining. 2006. <span>“Beyond Mule Kicks:
 The Poisson Distribution in Geographical Analysis.”</span> <em>Geogr.
 Anal.</em> 38 (2): 123–39.
+</div>
+<div id="ref-Griffith2006-yl" class="csl-entry">
+Griffith, Daniel A, and Pedro R Peres-Neto. 2006. <span>“Spatial
+Modeling in Ecology: The Flexibility of Eigenfunction Spatial
+Analyses.”</span> <em>Ecology</em> 87 (10): 2603–13.
 </div>
 <div id="ref-De_Jong1984-br" class="csl-entry">
 Jong, Peter de, C Sprenger, and Frans van Veen. 1984. <span>“On Extreme
@@ -4603,6 +4649,12 @@ Measure: An Integration of Pearson’s r and Moran’s
 Lun, Aaron T L, Karsten Bach, and John C Marioni. 2016. <span>“Pooling
 Across Cells to Normalize Single-Cell <span>RNA</span> Sequencing Data
 with Many Zero Counts.”</span> <em>Genome Biol.</em> 17 (April): 75.
+</div>
+<div id="ref-Luo2019-dk" class="csl-entry">
+Luo, Qing, Daniel A Griffith, and Huayi Wu. 2019. <span>“Spatial
+Autocorrelation for Massive Spatial Data: Verification of Efficiency and
+Statistical Power Asymptotics.”</span> <em>J. Geogr. Syst.</em> 21 (2):
+237–69.
 </div>
 <div id="ref-McKellar2021-ek" class="csl-entry">
 McKellar, David W, Lauren D Walter, Leo T Song, Madhav Mantri, Michael F
