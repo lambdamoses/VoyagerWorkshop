@@ -530,8 +530,9 @@ We see that myofiber regions with higher Myh2 expression also have stronger spat
 The results are stored in the `localResults` field in the SFE object, with getters and setters analogous to `reducedDims`, but the name of the local method and the feature/gene for which the local method was run need to be specified as well.
 
 ```{r}
-(lr <- localResults(sfe_tissue, name = "localmoran", features = "Myh2", 
-                    swap_rownames = "symbol"))
+lr <- localResult(sfe_tissue, type = "localmoran", feature = "Myh2", 
+                  swap_rownames = "symbol")
+head(lr)
 ```
 
 It is interesting to see how spatial autocorrelation relates to gene expression level, much as finding how variance relates to mean in the expression of each gene, which usually indicates overdispersion compared to Poisson in scRNA-seq and Visium data:
